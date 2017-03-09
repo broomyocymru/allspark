@@ -1,0 +1,15 @@
+ansible>=2.2.1.0
+azure-cli>=2.0.0
+oauthlib==0.7.2
+requests==2.9.1
+requests-oauthlib==0.5.0
+requests-toolbelt==0.4.0
+tlslite==0.4.8
+virtualenv==13.1.0
+click==6.6
+jsonmerge==1.1.0
+jsonschema==2.5.1
+vcversioner==2.14.0.0
+jinja2==2.8
+keyring==9.0
+colorama==0.3.7

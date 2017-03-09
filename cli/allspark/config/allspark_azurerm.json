@@ -1,0 +1,17 @@
+{
+   "config": {
+      "infrastructure": {
+         "vm_images": {
+            "small": {},
+            "medium": {},
+            "large": {}
+         }
+      },
+      "software": {
+         "archiva": {},
+         "sinopia": {},
+         "jenkins": {},
+         "k8": {}
+      }
+   }
+}
