@@ -2,7 +2,6 @@
 *.egg-info/
 .idea/
 *.pyc
-docs/
 tests/__pycache__/
 /.coverage
 .cache/
