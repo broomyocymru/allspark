@@ -1,8 +1,11 @@
-*.egg
-*.egg-info/
+cli/*.eggs/
+cli/*.egg-info/
 .idea/
 *.pyc
 tests/__pycache__/
 /.coverage
 .cache/
 .coverage
+projects/
+software/
+infrastructure/

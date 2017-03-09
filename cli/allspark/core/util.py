@@ -126,6 +126,17 @@ def makedir(f):
         os.makedirs(d)
 
 
+def rmdir(f):
+    shutil.rmtree(f)
+
+
+def write_template(template, data, output_file):
+    f = open(output_file, "w+")
+    content = "" #todo - combine template and data
+    f.write(content)
+    f.close()
+
+
 def copy_file(current_path, local_path):
     makedir(local_path)
     shutil.copyfile(current_path, local_path)

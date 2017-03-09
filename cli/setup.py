@@ -40,7 +40,7 @@ setup(
             'allspark = allspark.allspark:cli',
         ],
     },
-    packages=['allspark', 'allspark.core', 'allspark.commands'],
+    packages=['allspark', 'allspark.core', 'allspark.commands', 'allspark.providers'],
     include_package_data=True,
     platforms='any',
     zip_safe=False,
