@@ -9,12 +9,13 @@ from socket import gethostname
 from subprocess import Popen, PIPE, STDOUT
 from pip import get_installed_distributions
 import pkg_resources
+from jinja2 import Environment, PackageLoader, PrefixLoader, select_autoescape
 
 from allspark.core import logger
 
 
 def allspark_dir():
-    file_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '../..'))
+    file_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '../../..'))
     return file_path
 
 
@@ -132,7 +133,17 @@ def rmdir(f):
 
 def write_template(template, data, output_file):
     f = open(output_file, "w+")
-    content = "" #todo - combine template and data
+
+    loader = PrefixLoader({
+        'azurerm': PackageLoader('allspark.providers', 'azurerm')
+    })
+    env = Environment(
+        loader=loader,
+        autoescape=select_autoescape(['html', 'xml'])
+    )
+    template = env.get_template(template)
+    content = template.render(data=data)
+
     f.write(content)
     f.close()
 

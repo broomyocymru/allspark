@@ -10,6 +10,6 @@ click==6.6
 jsonmerge==1.1.0
 jsonschema==2.5.1
 vcversioner==2.14.0.0
-jinja2==2.8
+jinja2==2.9.5
 keyring==9.0
 colorama==0.3.7

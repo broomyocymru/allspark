@@ -1,16 +1,20 @@
 import click
 import os
+import traceback
 from allspark.core import config, util, logger
 
 PROVIDERS = ['azurerm']
 
 
 @click.command('init')
-@click.option('--name', prompt=config.not_set("allspark.name"), default=config.get("allspark.name"))
-@click.option('--provider', prompt=config.not_set("allspark.provider"), default=config.get("allspark.provider"),
+@click.option('--name', prompt=True)
+@click.option('--provider', prompt=True, default=config.get("allspark.provider"),
               type=click.Choice(PROVIDERS))
 def cli(name, provider):
     """Initiate an AllSpark Setup"""
+    # remember for next time
+    config.set("allspark.provider", provider)
+
     # Create Common Project Files
     project_path = util.allspark_dir() + "/projects/" + name
 
@@ -24,10 +28,10 @@ def cli(name, provider):
             util.makedir(project_path + "/software")
 
             # Cloud Specific Files
-            util.write_template("providers/" + name + "/main.tf.tpl", {}, project_path + "/main.tf")
-            util.write_template("providers/" + name + "/variables.tf.tpl", {}, project_path + "/variables.tf")
-            util.write_template("providers/" + name + "/terraform.tfvars.tpl", {}, project_path + "/terraform.tfvars")
-    except:
+            util.write_template(provider + "/main.tf.tpl", {}, project_path + "/main.tf")
+            util.write_template(provider + "/variables.tf.tpl", {}, project_path + "/variables.tf")
+            util.write_template(provider + "/terraform.tfvars.tpl", {}, project_path + "/terraform.tfvars")
+    except Exception, err:
         logger.error("Error creating project")
+        traceback.print_exc()
         util.rmdir(project_path + "/")
-

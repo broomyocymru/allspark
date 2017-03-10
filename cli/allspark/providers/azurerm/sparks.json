@@ -1,0 +1,46 @@
+{
+   "sparks":[
+      {
+         "name": "archiva",
+         "description": "Archiva v???",
+         "infra": {
+            "src": "github.com/broomyocymru/tf_azurerm_vm",
+            "params": {
+               "os": "ubuntu-1604",
+               "size": "D2",
+               "hostname": "archiva",
+               "vnet": "<admin>",
+               "additional_drive": "0"
+            }
+         },
+         "software": {
+            "src": "github.com/broomyocymru/allspark.archiva",
+            "params": {
+               "admin_username": "allspark_admin",
+               "admin_password": "<password>"
+            }
+         }
+      },
+      {
+         "name": "jenkins",
+         "description": "Jenkins v2",
+         "infra": {
+            "src": "github.com/broomyocymru/tf_azurerm_vm",
+            "params": {
+               "os": "ubuntu-1604",
+               "size": "D2",
+               "hostname": "archiva",
+               "vnet": "<admin>",
+               "additional_drive": "0"
+            }
+         },
+         "software": {
+            "src": "github.com/broomyocymru/allspark.jenkins2",
+            "params": {
+               "admin_username": "allspark_admin",
+               "admin_password": "<password>"
+            }
+         }
+      }
+   ]
+}
