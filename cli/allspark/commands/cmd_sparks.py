@@ -1,5 +1,6 @@
 import click
 from allspark.core import util, logger, config
+from allspark.providers import api
 
 
 @click.group('sparks')
@@ -9,26 +10,24 @@ def cli():
 
 @cli.command('list')
 @click.option('--provider', prompt=config.not_set("allspark.provider"), default=config.get("allspark.provider"))
-def spark_add(provider):
-    provider_sparks = util.allspark_dir() + "/cli/allspark/providers/" + provider + "/sparks.json"
-    provider_data = util.read_json(provider_sparks)
-
-    logger.log("Sparks available for " + provider + " = " + str(len(provider_data['sparks'])))
-    for spark in provider_data['sparks']:
-        logger.log(spark['name'] + ": " + spark['description'])
+def spark_list(provider):
+    api.list_sparks(provider)
 
 
 @cli.command('add')
 @click.argument('spark')
-@click.option('--name')
-@click.option('--version')
-def spark_add(spark, name, version):
-    logger.log("todo - spark add")
+@click.option('--name', prompt=True)
+@click.option('--provider', prompt=config.not_set("allspark.provider"), default=config.get("allspark.provider"))
+def spark_add(spark, name, provider):
+    api.is_valid(spark, provider)
+    api.add(spark, name, provider)
+    logger.log("Added " + spark)
 
 
 @cli.command('remove')
-@click.argument('spark')
-@click.option('--name')
-@click.option('--version')
-def spark_add(spark, name, version):
-    logger.log("todo - spark remove")
+@click.argument('name')
+def spark_remove(name):
+    api.remove(name)
+    logger.log("Removed " + name)
+
+#

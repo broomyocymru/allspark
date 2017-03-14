@@ -1,20 +1,20 @@
 {
    "sparks":[
       {
-         "name": "archiva",
-         "description": "Archiva v???",
+         "id": "archiva",
+         "description": "Archiva v2.2.1",
          "infra": {
             "src": "github.com/broomyocymru/tf_azurerm_vm",
             "params": {
-               "os": "ubuntu-1604",
-               "size": "D2",
-               "hostname": "archiva",
-               "vnet": "<admin>",
-               "additional_drive": "0"
+               "image": "Standard_D2_v2",
+               "role": "archiva",
+               "os": "ubuntu",
+               "allspark": "${module.allspark.admin_data}"
             }
          },
          "software": {
             "src": "github.com/broomyocymru/allspark.archiva",
+            "provisioner": "ansible",
             "params": {
                "admin_username": "allspark_admin",
                "admin_password": "<password>"
@@ -22,7 +22,7 @@
          }
       },
       {
-         "name": "jenkins",
+         "id": "jenkins",
          "description": "Jenkins v2",
          "infra": {
             "src": "github.com/broomyocymru/tf_azurerm_vm",

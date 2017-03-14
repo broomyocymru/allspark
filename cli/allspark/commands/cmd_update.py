@@ -1,8 +1,11 @@
 import click
 from allspark.core import util, logger
+from allspark.providers import api
 
 
 @click.command('update')
-def cli():
+@click.option('--dry', is_flag=True)
+@click.option('--batch', is_flag=True)
+def cli(dry, batch):
     """Update AllSpark setup"""
-    logger.log("todo - update")
+    api.update(dry, batch)

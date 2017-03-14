@@ -19,6 +19,11 @@ def allspark_dir():
     return file_path
 
 
+def abort(msg, error_code=1):
+    logger.error(msg)
+    sys.exit(error_code)
+
+
 def allspark_version():
     return pkg_resources.get_distribution("allspark").version
 
@@ -177,3 +182,10 @@ def oss_licenses():
             licenses["No License"].append(installed_distribution.project_name)
 
     return licenses
+
+def confirm(batch, prompt):
+    if(batch):
+        return True
+
+    val = raw_input(prompt)
+    return val.strip().lower() == "y"
