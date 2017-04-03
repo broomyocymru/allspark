@@ -6,6 +6,6 @@ provider "azurerm" {
   tenant_id       = "${var.azurerm_tenant_id}"
 }
 
-module "core" {
+module "allspark" {
   source  = "github.com/broomyocymru/tf_azurerm_allspark"
 }

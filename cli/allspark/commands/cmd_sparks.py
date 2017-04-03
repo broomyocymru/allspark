@@ -9,9 +9,16 @@ def cli():
 
 
 @cli.command('list')
+def spark_list():
+    """Provides the list of configured packages"""
+    api.list()
+
+
+@cli.command('available')
 @click.option('--provider', prompt=config.not_set("allspark.provider"), default=config.get("allspark.provider"))
 def spark_list(provider):
-    api.list_sparks(provider)
+    """Provides the list of available packages to install"""
+    api.available(provider)
 
 
 @cli.command('add')

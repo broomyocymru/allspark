@@ -4,42 +4,31 @@
          "id": "archiva",
          "description": "Archiva v2.2.1",
          "infra": {
-            "src": "github.com/broomyocymru/tf_azurerm_vm",
+            "src": "github.com/broomyocymru/tf_azurerm_allspark_vm",
             "params": {
-               "image": "Standard_D2_v2",
-               "role": "archiva",
-               "os": "ubuntu",
-               "allspark": "${module.allspark.admin_data}"
+               "allspark": "${module.allspark.admin_data}",
+               "username": "<os_username>",
+               "password": "<os_password>"
             }
          },
          "software": {
-            "src": "github.com/broomyocymru/allspark.archiva",
-            "provisioner": "ansible",
-            "params": {
-               "admin_username": "allspark_admin",
-               "admin_password": "<password>"
-            }
+            "src": "github.com/broomyocymru/allspark.archiva"
          }
       },
       {
          "id": "jenkins",
          "description": "Jenkins v2",
          "infra": {
-            "src": "github.com/broomyocymru/tf_azurerm_vm",
+            "src": "github.com/broomyocymru/tf_azurerm_allspark_vm",
             "params": {
-               "os": "ubuntu-1604",
-               "size": "D2",
-               "hostname": "archiva",
-               "vnet": "<admin>",
-               "additional_drive": "0"
+              "allspark": "${module.allspark.admin_data}",
+              "username": "<os_username>",
+              "password": "<os_password>",
+              "vm": "std-windows-server"
             }
          },
          "software": {
-            "src": "github.com/broomyocymru/allspark.jenkins2",
-            "params": {
-               "admin_username": "allspark_admin",
-               "admin_password": "<password>"
-            }
+            "src": "github.com/broomyocymru/allspark.jenkins2"
          }
       }
    ]

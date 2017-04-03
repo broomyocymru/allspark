@@ -7,6 +7,9 @@ class AllsparkGenerator:
     def __init__(self, project_dir):
         self.project_dir = project_dir
         self.project_config = project_dir + "/allspark.json"
+        self.project_infra_dir = self.project_dir + "/infrastructure"
+        self.project_software_dir = self.project_dir + "/software"
+
         self.data = {"provider":"", "sparks":{}}
         self.load()
 
@@ -35,32 +38,44 @@ class AllsparkGenerator:
 
         try:
             if os.path.exists(self.project_dir):
-                util.write_template(provider + "/sparks.tf.tpl", self.data, self.project_dir + "/sparks.tf")
+                util.write_template("common/sparks.tf.tpl", self.data, self.project_infra_dir + "/sparks.tf")
+                util.write_template("common/allsparks.yml.tpl", self.data, self.project_software_dir + "/allsparks.yml")
             else:
                 util.makedir(self.project_dir + "/")
                 self.data["provider"] = provider
                 util.write_json(self.project_config, self.data)
-                util.makedir(self.project_dir + "/infrastructure")
-                util.makedir(self.project_dir + "/software")
+                util.makedir(self.project_infra_dir + "/")
+                util.makedir(self.project_software_dir + "/")
 
-                # Cloud Specific Files
-                util.write_template(provider + "/main.tf.tpl", {}, self.project_dir + "/main.tf")
-                util.write_template(provider + "/variables.tf.tpl", {}, self.project_dir + "/variables.tf")
-                util.write_template(provider + "/terraform.tfvars.tpl", {}, self.project_dir + "/terraform.tfvars")
-                logger.log("init complete")
+                logger.log("init infrastructure code")
+                self.generate_infra()
+
+                logger.log("init provisioning code")
+                self.generate_software()
+
+                logger.log("complete")
         except Exception, err:
             logger.error("Error creating project")
             traceback.print_exc()
+
+    def generate_infra(self):
+        provider = self.get_provider()
+        util.write_template(provider + "/main.tf.tpl", {}, self.project_infra_dir + "/main.tf")
+        util.write_template(provider + "/variables.tf.tpl", {}, self.project_infra_dir + "/variables.tf")
+        util.write_template(provider + "/terraform.tfvars.tpl", {}, self.project_infra_dir + "/terraform.tfvars")
+
+    def generate_software(self):
+        util.write_template("common/ssh_config.tpl", {}, self.project_software_dir + "/ssh_config.conf")
 
     def update(self, dry, batch):
         self.check_project_dir()
         self.generate()
 
-        # Infra
-        util.shell_run("terraform get && terraform plan")
+        util.shell_run("terraform get -update") # pull in any module changes
+        util.shell_run("terraform plan") # calculate any differences since last run
 
         if not dry and util.confirm(batch, 'Apply Infrastructure Changes [Y/N] :'):
-            util.shell_run("terraform apply")
+            util.shell_run("terraform apply") # apply infra changes
 
             # Software
             if not dry and util.confirm(batch, 'Apply Software Changes [Y/N] :'):
@@ -76,3 +91,7 @@ class AllsparkGenerator:
         self.check_project_dir()
         self.data["sparks"].pop(name, "")
         self.save()
+
+    def list(self):
+        self.check_project_dir()
+        return self.data["sparks"]

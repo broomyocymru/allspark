@@ -15,7 +15,7 @@ def get_sparks(provider):
     provider_data = util.read_json(provider_sparks)
     return provider_data['sparks']
 
-def list_sparks(provider):
+def available(provider):
     sparks = get_sparks(provider)
     logger.log("Sparks available for " + provider + " = " + str(len(sparks)))
     for spark in sparks:
@@ -35,6 +35,11 @@ def get_spark(name, provider):
             return spark
     util.abort("Invalid Spark")
 
+def set_spark_params(data):
+    # <generate_password>
+    # <prompt_input>
+    return data
+
 # Project Methods
 def init(project_path, provider):
     gen = state.AllsparkGenerator(project_path)
@@ -47,7 +52,16 @@ def update(dry, batch):
 def add(spark, name, provider):
     gen = state.AllsparkGenerator(os.getcwd())
     data = get_spark(spark, provider)
+    data = set_spark_params(data)
     gen.add(name, data)
+
+def list():
+    gen = state.AllsparkGenerator(os.getcwd())
+    sparks = gen.list()
+    logger.log("Sparks added to Project = " + str(len(sparks)))
+
+    for name, config in sparks.iteritems():
+        logger.log(name + ": " + config['description'])
 
 def remove(name):
     gen = state.AllsparkGenerator(os.getcwd())

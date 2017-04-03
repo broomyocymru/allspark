@@ -10,6 +10,7 @@ from subprocess import Popen, PIPE, STDOUT
 from pip import get_installed_distributions
 import pkg_resources
 from jinja2 import Environment, PackageLoader, PrefixLoader, select_autoescape
+from random import choice
 
 from allspark.core import logger
 
@@ -140,6 +141,7 @@ def write_template(template, data, output_file):
     f = open(output_file, "w+")
 
     loader = PrefixLoader({
+        'common': PackageLoader('allspark.providers', 'common'),
         'azurerm': PackageLoader('allspark.providers', 'azurerm')
     })
     env = Environment(
@@ -189,3 +191,7 @@ def confirm(batch, prompt):
 
     val = raw_input(prompt)
     return val.strip().lower() == "y"
+
+
+def generate_password(length=32, choice="['ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789%^*(-_=+)'"):
+    return ''.join([choice(choice) for i in range(length)])
