@@ -14,7 +14,7 @@ check_installed "python"
 check_installed "terraform"
 
 echo "Installing AllSpark cli..."
-# create virtualenv
+# todo - create in a virtualenv !!!!
 pip install -r ./cli/requirements.txt --upgrade
 pip install -e ./cli
 

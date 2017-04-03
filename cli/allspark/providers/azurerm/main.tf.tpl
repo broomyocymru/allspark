@@ -8,4 +8,5 @@ provider "azurerm" {
 
 module "allspark" {
   source  = "github.com/broomyocymru/tf_azurerm_allspark"
+  name    = "allspark"
 }

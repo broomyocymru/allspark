@@ -6,13 +6,15 @@
          "infra": {
             "src": "github.com/broomyocymru/tf_azurerm_allspark_vm",
             "params": {
-               "allspark": "${module.allspark.admin_data}",
+               "allspark": "${module.allspark.allspark_data}",
                "username": "<os_username>",
-               "password": "<os_password>"
+               "password": "<os_password>",
+               "role"    : "archiva",
+               "subnet"  : "admin"
             }
          },
          "software": {
-            "src": "github.com/broomyocymru/allspark.archiva"
+            "src": "https://github.com/broomyocymru/allspark.archiva"
          }
       },
       {
@@ -21,14 +23,16 @@
          "infra": {
             "src": "github.com/broomyocymru/tf_azurerm_allspark_vm",
             "params": {
-              "allspark": "${module.allspark.admin_data}",
+              "allspark": "${module.allspark.allspark_data}",
               "username": "<os_username>",
               "password": "<os_password>",
-              "vm": "std-windows-server"
+              "vm": "std_windows_server",
+              "role"    : "jenkins2",
+              "subnet"  : "admin"
             }
          },
          "software": {
-            "src": "github.com/broomyocymru/allspark.jenkins2"
+            "src": "https://github.com/broomyocymru/allspark.jenkins2"
          }
       }
    ]

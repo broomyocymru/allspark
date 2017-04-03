@@ -1,4 +1,5 @@
 # Contents regenerated
 {% for spark, data in data.sparks.iteritems() %}
-{{ data.software.src }}
+- src: {{ data.software.src }}
+
 {% endfor %}

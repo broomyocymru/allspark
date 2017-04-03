@@ -9,6 +9,7 @@ class AllsparkGenerator:
         self.project_config = project_dir + "/allspark.json"
         self.project_infra_dir = self.project_dir + "/infrastructure"
         self.project_software_dir = self.project_dir + "/software"
+        self.project_ssh_dir = self.project_dir + "/ssh"
 
         self.data = {"provider":"", "sparks":{}}
         self.load()
@@ -46,6 +47,7 @@ class AllsparkGenerator:
                 util.write_json(self.project_config, self.data)
                 util.makedir(self.project_infra_dir + "/")
                 util.makedir(self.project_software_dir + "/")
+                util.makedir(self.project_ssh_dir + "/")
 
                 logger.log("init infrastructure code")
                 self.generate_infra()
@@ -71,16 +73,22 @@ class AllsparkGenerator:
         self.check_project_dir()
         self.generate()
 
-        util.shell_run("terraform get -update") # pull in any module changes
-        util.shell_run("terraform plan") # calculate any differences since last run
+        # Download terraform and ansible modules
+        util.shell_run("terraform get -update", cwd=self.project_infra_dir)
 
-        if not dry and util.confirm(batch, 'Apply Infrastructure Changes [Y/N] :'):
-            util.shell_run("terraform apply") # apply infra changes
+        role_path = self.project_software_dir + "/roles"
+        util.shell_run("ansible-galaxy install -r allsparks.yml -p " + role_path + " -f", cwd=self.project_software_dir)
 
-            # Software
-            if not dry and util.confirm(batch, 'Apply Software Changes [Y/N] :'):
-                logger.log("todo - ansible")
-                # todo - util.shell_run("ansible-galaxy install -r allspark-requirements.yml -f")
+        if util.confirm(batch, 'Plan Infrastructure Changes [Y/N] :'):
+            util.shell_run("terraform plan", cwd=self.project_infra_dir)
+
+            if not dry and util.confirm(batch, 'Apply Infrastructure Changes [Y/N] :'):
+                util.shell_run("terraform apply") # apply infra changes
+
+                # Software
+                if not dry and util.confirm(batch, 'Apply Software Changes [Y/N] :'):
+                    logger.log("todo - ansible")
+                    # todo - util.shell_run("ansible-galaxy install -r allspark-requirements.yml -f")
 
     def add(self, name, spark):
         self.check_project_dir()
