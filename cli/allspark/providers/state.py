@@ -2,6 +2,7 @@ from allspark.core import logger, util
 import os
 import traceback
 import json
+from datetime import datetime
 
 class AllsparkGenerator:
     def __init__(self, project_dir):
@@ -17,6 +18,7 @@ class AllsparkGenerator:
     def load(self):
         if(os.path.exists(self.project_config)):
             self.data = util.read_json(self.project_config)
+        self.data['updated_at'] = datetime.utcnow()
 
     def get_provider(self):
         return self.data['provider']
@@ -68,6 +70,7 @@ class AllsparkGenerator:
 
     def generate_software(self):
         util.write_template("common/ssh_config.tpl", {}, self.project_software_dir + "/ssh_config.conf")
+        util.download("https://raw.githubusercontent.com/broomyocymru/terraform.py/master/terraform.py", self.project_software_dir + "/inventory.py")
 
     def update(self, dry, batch):
         self.check_project_dir()

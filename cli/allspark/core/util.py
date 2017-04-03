@@ -11,6 +11,7 @@ from pip import get_installed_distributions
 import pkg_resources
 from jinja2 import Environment, PackageLoader, PrefixLoader, select_autoescape
 from random import choice
+import requests
 
 from allspark.core import logger
 
@@ -159,6 +160,13 @@ def copy_file(current_path, local_path):
     makedir(local_path)
     shutil.copyfile(current_path, local_path)
     return
+
+
+def download(url, local_file_path):
+    r = requests.get(url)
+    f = open(local_file_path, "w+")
+    f.write(r.content)
+    f.close()
 
 
 def oss_licenses():

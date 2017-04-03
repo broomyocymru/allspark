@@ -1,4 +1,4 @@
-# Contents regenerated
+# Contents regenerated at {{data.updated_at}}
 {% for spark, data in data.sparks.iteritems() %}
 module "{{ spark }}" {
   source    = "{{ data.infra.src }}"
