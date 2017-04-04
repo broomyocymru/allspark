@@ -70,28 +70,34 @@ class AllsparkGenerator:
 
     def generate_software(self):
         util.write_template("common/ssh_config.tpl", {}, self.project_software_dir + "/ssh_config.conf")
+        util.write_template("common/ansible.cfg.tpl", {}, self.project_software_dir + "/ansible.cfg")
         util.download("https://raw.githubusercontent.com/broomyocymru/terraform.py/master/terraform.py", self.project_software_dir + "/inventory.py")
+        util.shell_run("chmod +x inventory.py", cwd=self.project_software_dir)
 
-    def update(self, dry, batch):
+    def update(self, dry, batch, force):
         self.check_project_dir()
         self.generate()
 
+        tf_force = " -update" if force else ""
+        an_force = " -f" if force else ""
+
+
         # Download terraform and ansible modules
-        util.shell_run("terraform get -update", cwd=self.project_infra_dir)
+        util.shell_run("terraform get" + tf_force, cwd=self.project_infra_dir)
 
         role_path = self.project_software_dir + "/roles"
-        util.shell_run("ansible-galaxy install -r allsparks.yml -p " + role_path + " -f", cwd=self.project_software_dir)
+        util.shell_run("ansible-galaxy install -r allsparks.yml -p " + role_path + an_force, cwd=self.project_software_dir)
 
         if util.confirm(batch, 'Plan Infrastructure Changes [Y/N] :'):
             util.shell_run("terraform plan", cwd=self.project_infra_dir)
 
             if not dry and util.confirm(batch, 'Apply Infrastructure Changes [Y/N] :'):
-                util.shell_run("terraform apply") # apply infra changes
+                util.shell_run("terraform apply", cwd=self.project_infra_dir) # apply infra changes
 
                 # Software
                 if not dry and util.confirm(batch, 'Apply Software Changes [Y/N] :'):
-                    logger.log("todo - ansible")
-                    # todo - util.shell_run("ansible-galaxy install -r allspark-requirements.yml -f")
+                    logger.log("todo - ansible replace ping test")
+                    util.shell_run("ansible -i inventory.py -m ping all", cwd=self.project_software_dir)
 
     def add(self, name, spark):
         self.check_project_dir()

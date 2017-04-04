@@ -45,9 +45,9 @@ def init(project_path, provider):
     gen = state.AllsparkGenerator(project_path)
     gen.generate(provider)
 
-def update(dry, batch):
+def update(dry, batch, force):
     gen = state.AllsparkGenerator(os.getcwd())
-    gen.update(dry, batch)
+    gen.update(dry, batch, force)
 
 def add(spark, name, provider):
     gen = state.AllsparkGenerator(os.getcwd())

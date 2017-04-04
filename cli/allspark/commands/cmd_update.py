@@ -4,8 +4,9 @@ from allspark.providers import api
 
 
 @click.command('update')
-@click.option('--dry', is_flag=True)
-@click.option('--batch', is_flag=True)
-def cli(dry, batch):
+@click.option('-d', '--dry', is_flag=True)
+@click.option('-b', '--batch', is_flag=True)
+@click.option('-f', '--force', is_flag=True)
+def cli(dry, batch, force):
     """Update AllSpark setup"""
-    api.update(dry, batch)
+    api.update(dry, batch, force)
