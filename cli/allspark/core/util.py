@@ -10,10 +10,9 @@ from subprocess import Popen, PIPE, STDOUT
 from pip import get_installed_distributions
 import pkg_resources
 from jinja2 import Environment, PackageLoader, PrefixLoader, select_autoescape
-from random import choice
 import requests
-
-from allspark.core import logger
+from allspark.core import logger, randomness
+import re
 
 
 def allspark_dir():
@@ -149,11 +148,30 @@ def write_template(template, data, output_file):
         loader=loader,
         autoescape=select_autoescape(['html', 'xml'])
     )
+    env.filters["replace"] = template_replace
     template = env.get_template(template)
     content = template.render(data=data)
 
     f.write(content)
     f.close()
+
+def template_replace(text, name=None, data={}):
+    if("<random_username>" in text):
+        text = text.replace("<random_username>", randomness.username())
+
+    if("<random_password>" in text):
+        text = text.replace("<random_password>", randomness.password())
+
+    if(name is not None and "<name>" in text):
+        text = text.replace("<name>", name)
+
+    # todo - something clever with flattening dict
+
+    # prompted text
+    if("<prompt|" in text):
+        logger.log("todo - process prompt tags!")
+
+    return text
 
 
 def copy_file(current_path, local_path):
@@ -199,7 +217,3 @@ def confirm(batch, prompt):
 
     val = raw_input(prompt)
     return val.strip().lower() == "y"
-
-
-def generate_password(length=32, choice="['ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789%^*(-_=+)'"):
-    return ''.join([choice(choice) for i in range(length)])

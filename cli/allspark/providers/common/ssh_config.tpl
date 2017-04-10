@@ -1,22 +1,26 @@
 # Contents regenerated at {{data.updated_at}}
-
-# Loop all virtual machines, linking to the bastion within the allspark network
-{% for spark, data in data.sparks.iteritems() %}
-# if virtual machine
-Host {internal_ip or hostname}
-  ProxyCommand ssh -W %h:%p {via_bastion_host_id}
-  IdentityFile {internal_ssh_key}
+{% for bastion_ip, bastion_details in data.iteritems() %}
+{% for vm_private_ip, vm_details in bastion_details['vms'].iteritems() %}
+# {{vm_details['name']}}
+Host {{vm_private_ip}}
+  ProxyJump {{bastion_details['username']}}@{{bastion_details['private_ip']}}:22
+  User {{vm_details['username']}}
+  IdentityFile {{bastion_details['identity_file']}}
+  StrictHostKeyChecking no
+  UserKnownHostsFile /dev/null
+  ServerAliveInterval 60
+  TCPKeepAlive yes
 {% endfor %}
 
-
-# Loop all bastions within the allspark modules
-{% for spark, data in data.sparks.iteritems() %}
-# if bastion role
-Host {bastion_host_x}
-  Hostname {bastion_host}
-  User {bastion_username}
-  IdentityFile {bastion_private_key}
+# Bastion {{bastion_details['bastion_private_ip']}}
+Host {{bastion_details['private_ip']}}
+  Hostname {{bastion_ip}}
+  User {{bastion_details['username']}}
+  IdentityFile {{bastion_details['identity_file']}}
+  StrictHostKeyChecking no
+  UserKnownHostsFile /dev/null
   ControlMaster auto
-  ControlPath ~/.ssh/ansible-%r@%h:%p
+  ControlPath ~/.ssh/%%h-%%r
   ControlPersist 5m
+  ForwardAgent yes
 {% endfor %}

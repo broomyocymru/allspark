@@ -49,6 +49,10 @@ def update(dry, batch, force):
     gen = state.AllsparkGenerator(os.getcwd())
     gen.update(dry, batch, force)
 
+def nuke(force):
+    gen = state.AllsparkGenerator(os.getcwd())
+    gen.nuke(force)
+
 def add(spark, name, provider):
     gen = state.AllsparkGenerator(os.getcwd())
     data = get_spark(spark, provider)

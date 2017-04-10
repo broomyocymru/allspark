@@ -1,5 +1,28 @@
 {
    "sparks":[
+       {
+          "id": "allspark",
+          "description": "allspark virtual network",
+          "infra": {
+             "src": "github.com/broomyocymru/tf_azurerm_allspark",
+             "params": {
+               "name" : "<name>",
+               "bastion_username" : "<random_username>",
+               "bastion_password" : "<random_password>"
+             },
+             "outputs": {
+                "<name>_vpc_out": "${module.<name>.allspark_data}"
+             }
+          },
+          "software": {
+             "src": "https://github.com/broomyocymru/allspark.common",
+             "name": "allspark.common",
+             "params": {
+                "text": "<prompt|value of demo text>",
+                "text2": "<prompt|value of demo text2>"
+             }
+          }
+       },
       {
          "id": "archiva",
          "description": "Archiva v2.2.1",
@@ -7,14 +30,20 @@
             "src": "github.com/broomyocymru/tf_azurerm_allspark_vm",
             "params": {
                "allspark": "${module.allspark.allspark_data}",
-               "username": "<os_username>",
-               "password": "<os_password>",
+               "username": "<random_username>",
+               "password": "<random_password>",
                "role"    : "archiva",
                "subnet"  : "admin"
+            },
+            "outputs": {
+              "<name>_vm_out": "${module.<name>.allspark_data}"
             }
          },
          "software": {
-            "src": "https://github.com/broomyocymru/allspark.archiva"
+            "src": "https://github.com/broomyocymru/allspark.common",
+            "params": {
+
+            }
          }
       },
       {
@@ -24,16 +53,37 @@
             "src": "github.com/broomyocymru/tf_azurerm_allspark_vm",
             "params": {
               "allspark": "${module.allspark.allspark_data}",
-              "username": "<os_username>",
-              "password": "<os_password>",
-              "vm": "std_windows_server",
+              "username": "<random_username>",
+              "password": "<random_password>",
               "role"    : "jenkins2",
               "subnet"  : "admin"
+            },
+            "outputs": {
+              "<name>_vm_out": "${module.<name>.allspark_data}"
             }
          },
          "software": {
-            "src": "https://github.com/broomyocymru/allspark.jenkins2"
+            "src": "https://github.com/broomyocymru/allspark.common",
+            "params": {
+
+            }
          }
+      },
+      {
+         "id": "acr",
+         "description": "Azure Container Registry",
+         "infra": {
+            "src": "github.com/broomyocymru/tf_azurerm_acr",
+            "params": {
+              "name": "<name>containerregistry",
+              "resource_group_name": "${module.allspark.allspark_data['resource_group_name']}",
+              "storage_account_name": "${module.allspark.allspark_data['storage_account_name']}"
+            },
+            "outputs": {
+              "<name>_vm_out": "${module.<name>.allspark_data}"
+            }
+         },
+         "software": {}
       }
    ]
 }

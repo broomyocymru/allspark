@@ -18,7 +18,7 @@ class AllsparkGenerator:
     def load(self):
         if(os.path.exists(self.project_config)):
             self.data = util.read_json(self.project_config)
-        self.data['updated_at'] = datetime.utcnow()
+        self.data['updated_at'] = datetime.utcnow().strftime('%Y-%m-%d %H:%M:%S')
 
     def get_provider(self):
         return self.data['provider']
@@ -35,6 +35,38 @@ class AllsparkGenerator:
         else:
             util.abort("Error: Allspark project not found!")
 
+    def generate_ssh_config(self):
+        data = {}
+        tf_out = util.read_json(self.project_infra_dir + "/tf_out.json")
+
+        # Get all the VPC its bastions
+        for k, v in tf_out.iteritems():
+            if k.endswith("_vpc_out"):
+                vpc_name = k.replace("_vpc_out", "")
+                vpc_bastion_ip = v['value']['bastion_ip']
+                data[vpc_bastion_ip] = {
+                    "name": vpc_name,
+                    "username": v['value']['bastion_username'],
+                    "private_ip": v['value']['bastion_private_ip'],
+                    "identity_file": v['value']['identity_file'],
+                    "vms": {}
+                }
+
+        # Add any VM's via the bastion
+        for k, v in tf_out.iteritems():
+            if k.endswith("_vm_out"):
+                vm_name = k.replace("_vm_out", "")
+                vm_private_ip = v['value']['private_ip']
+                vm_bastion_ip = v['value']['bastion_ip']
+
+                data[vm_bastion_ip]["vms"][vm_private_ip] = {
+                    "username": v['value']['username'],
+                    "name": vm_name
+                }
+
+        logger.vjson(data)
+        util.write_template("common/ssh_config.tpl", data, self.project_software_dir + "/ssh_config.conf")
+
     def generate(self, provider=None):
         if(provider is None):
             provider = self.get_provider()
@@ -42,7 +74,9 @@ class AllsparkGenerator:
         try:
             if os.path.exists(self.project_dir):
                 util.write_template("common/sparks.tf.tpl", self.data, self.project_infra_dir + "/sparks.tf")
+                # todo - change to filter src list for duplicates
                 util.write_template("common/allsparks.yml.tpl", self.data, self.project_software_dir + "/allsparks.yml")
+
             else:
                 util.makedir(self.project_dir + "/")
                 self.data["provider"] = provider
@@ -50,6 +84,7 @@ class AllsparkGenerator:
                 util.makedir(self.project_infra_dir + "/")
                 util.makedir(self.project_software_dir + "/")
                 util.makedir(self.project_ssh_dir + "/")
+                util.shell_run("touch allspark.rsa", cwd=self.project_ssh_dir) # todo - temp workaround where terraform expects a file to exist at plan evaulation
 
                 logger.log("init infrastructure code")
                 self.generate_infra()
@@ -69,10 +104,15 @@ class AllsparkGenerator:
         util.write_template(provider + "/terraform.tfvars.tpl", {}, self.project_infra_dir + "/terraform.tfvars")
 
     def generate_software(self):
-        util.write_template("common/ssh_config.tpl", {}, self.project_software_dir + "/ssh_config.conf")
         util.write_template("common/ansible.cfg.tpl", {}, self.project_software_dir + "/ansible.cfg")
         util.download("https://raw.githubusercontent.com/broomyocymru/terraform.py/master/terraform.py", self.project_software_dir + "/inventory.py")
         util.shell_run("chmod +x inventory.py", cwd=self.project_software_dir)
+
+    def nuke(self, force):
+        util.shell_run("terraform plan -destroy", cwd=self.project_infra_dir)
+
+        if util.confirm(force, 'Destroy Infrastructure? [Y/N] :'):
+            util.shell_run("terraform destroy -force", cwd=self.project_infra_dir)
 
     def update(self, dry, batch, force):
         self.check_project_dir()
@@ -80,7 +120,6 @@ class AllsparkGenerator:
 
         tf_force = " -update" if force else ""
         an_force = " -f" if force else ""
-
 
         # Download terraform and ansible modules
         util.shell_run("terraform get" + tf_force, cwd=self.project_infra_dir)
@@ -93,16 +132,22 @@ class AllsparkGenerator:
 
             if not dry and util.confirm(batch, 'Apply Infrastructure Changes [Y/N] :'):
                 util.shell_run("terraform apply", cwd=self.project_infra_dir) # apply infra changes
+                util.shell_run("terraform output -json > tf_out.json", cwd=self.project_infra_dir) # get output variables
+                self.generate_ssh_config()
 
                 # Software
                 if not dry and util.confirm(batch, 'Apply Software Changes [Y/N] :'):
-                    logger.log("todo - ansible replace ping test")
-                    util.shell_run("ansible -i inventory.py -m ping all", cwd=self.project_software_dir)
+                    util.shell_run("ansible -i inventory.py -m ping all -vvv", cwd=self.project_software_dir)
+                    util.shell_run("ansible-playbook site.yml -i inventory.py -vvv", cwd=self.project_software_dir)
 
     def add(self, name, spark):
         self.check_project_dir()
-        self.data["sparks"][name] = spark
-        self.save()
+        if name not in self.data["sparks"]:
+            spark = self.set_placeholders(name, spark)
+            self.data["sparks"][name] = spark
+            self.save()
+        else:
+            logger.error("Spark named '" + name + "' already exists!")
 
     def remove(self, name):
         self.check_project_dir()
@@ -112,3 +157,8 @@ class AllsparkGenerator:
     def list(self):
         self.check_project_dir()
         return self.data["sparks"]
+
+    def set_placeholders(self, name, spark):
+        text = json.dumps(spark, indent=4, sort_keys=False)
+        text = util.template_replace(text, name, spark)
+        return util.read_json_str(text)
