@@ -3,6 +3,7 @@ from allspark.providers import state
 import os
 
 # API Methods
+CWD = state.AllsparkGenerator(os.getcwd())
 
 # Provider Methods
 def providers():
@@ -46,27 +47,30 @@ def init(project_path, provider):
     gen.generate(provider)
 
 def update(dry, batch, force):
-    gen = state.AllsparkGenerator(os.getcwd())
-    gen.update(dry, batch, force)
+    CWD.update(dry, batch, force)
 
 def nuke(force):
-    gen = state.AllsparkGenerator(os.getcwd())
-    gen.nuke(force)
+    CWD.nuke(force)
 
 def add(spark, name, provider):
-    gen = state.AllsparkGenerator(os.getcwd())
     data = get_spark(spark, provider)
     data = set_spark_params(data)
-    gen.add(name, data)
+    CWD.add(name, data)
 
 def list():
-    gen = state.AllsparkGenerator(os.getcwd())
-    sparks = gen.list()
+    sparks = CWD.list()
     logger.log("Sparks added to Project = " + str(len(sparks)))
 
     for name, config in sparks.iteritems():
         logger.log(name + ": " + config['description'])
 
+def list_vms():
+    for name, ip in CWD.vms().iteritems():
+        logger.log(name + ": " + ip)
+
+def get_vm_ip(name):
+    vm = CWD.tf_out()[name + "_vm_out"]
+    return vm['value']['private_ip']
+
 def remove(name):
-    gen = state.AllsparkGenerator(os.getcwd())
-    gen.remove(name)
+    CWD.remove(name)

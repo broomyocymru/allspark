@@ -11,9 +11,23 @@ class AllsparkGenerator:
         self.project_infra_dir = self.project_dir + "/infrastructure"
         self.project_software_dir = self.project_dir + "/software"
         self.project_ssh_dir = self.project_dir + "/ssh"
+        self.tf_outputs = "tf_out.json"
 
         self.data = {"provider":"", "sparks":{}}
         self.load()
+
+    def tf_out(self):
+        return util.read_json(self.project_infra_dir + "/" + self.tf_outputs)
+
+    def vms(self):
+        vms = {}
+        # Get all the VPC its bastions
+        for k, v in self.tf_out().iteritems():
+            if k.endswith("_vm_out"):
+                name = k.replace("_vm_out", "")
+                ip = v['value']['private_ip']
+                vms[name] = ip
+        return vms
 
     def load(self):
         if(os.path.exists(self.project_config)):
@@ -37,10 +51,9 @@ class AllsparkGenerator:
 
     def generate_ssh_config(self):
         data = {}
-        tf_out = util.read_json(self.project_infra_dir + "/tf_out.json")
 
         # Get all the VPC its bastions
-        for k, v in tf_out.iteritems():
+        for k, v in self.tf_out().iteritems():
             if k.endswith("_vpc_out"):
                 vpc_name = k.replace("_vpc_out", "")
                 vpc_bastion_ip = v['value']['bastion_ip']
@@ -53,7 +66,7 @@ class AllsparkGenerator:
                 }
 
         # Add any VM's via the bastion
-        for k, v in tf_out.iteritems():
+        for k, v in self.tf_out().iteritems():
             if k.endswith("_vm_out"):
                 vm_name = k.replace("_vm_out", "")
                 vm_private_ip = v['value']['private_ip']
@@ -131,14 +144,21 @@ class AllsparkGenerator:
             util.shell_run("terraform plan", cwd=self.project_infra_dir)
 
             if not dry and util.confirm(batch, 'Apply Infrastructure Changes [Y/N] :'):
+                logger.log("")
+                logger.log("Build Infrastructure")
+                logger.log("")
                 util.shell_run("terraform apply", cwd=self.project_infra_dir) # apply infra changes
-                util.shell_run("terraform output -json > tf_out.json", cwd=self.project_infra_dir) # get output variables
+                util.shell_run("terraform output -json > " + self.tf_outputs, cwd=self.project_infra_dir) # get output variables
                 self.generate_ssh_config()
 
                 # Software
                 if not dry and util.confirm(batch, 'Apply Software Changes [Y/N] :'):
-                    util.shell_run("ansible -i inventory.py -m ping all -vvv", cwd=self.project_software_dir)
-                    util.shell_run("ansible-playbook site.yml -i inventory.py -vvv", cwd=self.project_software_dir)
+                    logger.log("")
+                    logger.log("Provision Software")
+                    logger.log("")
+                    util.shell_run("ansible -i inventory.py -m ping ssh.*", cwd=self.project_software_dir)
+                    #util.shell_run("ansible -i inventory.py -m win_ping winrm.*", cwd=self.project_software_dir)
+                    util.shell_run("ansible-playbook site.yml -i inventory.py", cwd=self.project_software_dir)
 
     def add(self, name, spark):
         self.check_project_dir()
