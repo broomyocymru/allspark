@@ -8,8 +8,6 @@ Host {{vm_private_ip}}
   IdentityFile {{bastion_details['identity_file']}}
   StrictHostKeyChecking no
   UserKnownHostsFile /dev/null
-  ServerAliveInterval 60
-  TCPKeepAlive yes
 {% endfor %}
 
 # Bastion {{bastion_details['bastion_private_ip']}}

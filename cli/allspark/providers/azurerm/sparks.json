@@ -1,10 +1,10 @@
 {
    "sparks":[
        {
-          "id": "allspark",
+          "id": "vpc",
           "description": "allspark virtual network",
           "infra": {
-             "src": "github.com/broomyocymru/tf_azurerm_allspark",
+             "src": "github.com/broomyocymru/tf_azurerm_allspark_vpc",
              "params": {
                "name" : "<name>",
                "bastion_username" : "<random_username>",

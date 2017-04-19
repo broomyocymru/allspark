@@ -7,7 +7,7 @@ provider "azurerm" {
 }
 
 module "allspark" {
-  source              = "github.com/broomyocymru/tf_azurerm_allspark"
+  source              = "github.com/broomyocymru/tf_azurerm_allspark_vpc"
   name                = "allspark"
   bastion_username    = "allspark"
   bastion_password    = "A11Spark!"

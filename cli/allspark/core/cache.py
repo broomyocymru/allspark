@@ -5,8 +5,7 @@ import uuid
 from os.path import expanduser
 
 import requests
-
-from allspark.core import logger
+import logger
 
 
 def setup():

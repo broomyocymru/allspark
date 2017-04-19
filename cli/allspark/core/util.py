@@ -11,13 +11,8 @@ from pip import get_installed_distributions
 import pkg_resources
 from jinja2 import Environment, PackageLoader, PrefixLoader, select_autoescape
 import requests
-from allspark.core import logger, randomness
+import logger, randomness
 import re
-
-
-def allspark_dir():
-    file_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '../../..'))
-    return file_path
 
 
 def abort(msg, error_code=1):

@@ -1,5 +1,5 @@
-cli/*.eggs/
-cli/*.egg-info/
+cli/**.eggs/
+cli/**.egg-info/
 .idea/
 *.pyc
 tests/__pycache__/
@@ -9,3 +9,4 @@ tests/__pycache__/
 projects/
 software/
 infrastructure/
+_book/

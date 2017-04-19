@@ -1,5 +1,7 @@
 from allspark.core import logger, util
 from allspark.providers import state
+import pkg_resources
+
 import os
 
 # API Methods
@@ -11,9 +13,8 @@ def providers():
 
 # Sparks Methods
 def get_sparks(provider):
-    # todo - replace with package lookup!
-    provider_sparks = util.allspark_dir() + "/cli/allspark/providers/" + provider + "/sparks.json"
-    provider_data = util.read_json(provider_sparks)
+    template = pkg_resources.resource_string("allspark.providers." + provider, "sparks.json")
+    provider_data = util.read_json_str(template)
     return provider_data['sparks']
 
 def available(provider):

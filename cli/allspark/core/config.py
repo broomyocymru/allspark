@@ -2,8 +2,7 @@ import base64
 import json
 import os.path
 from os.path import expanduser
-
-from allspark.core import logger
+import logger
 
 
 def get(key):

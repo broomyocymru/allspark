@@ -1,7 +1,7 @@
 import sys
 
 import click
-from allspark.core import stopwatch, logger, util, analytics, cache
+import stopwatch, logger, util, analytics, cache
 
 
 class allsparkContext(object):
@@ -44,4 +44,3 @@ class allsparkContext(object):
         logger.allspark("")
         logger.allspark(">>> allspark took %s and finished at %s >>>" % (duration, util.timestamp()))
         logger.allspark("")
-

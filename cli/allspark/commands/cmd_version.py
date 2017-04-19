@@ -6,7 +6,6 @@ from allspark.core import util, logger
 def cli():
     """Print version info, use -v for licenses"""
     logger.log("allspark Version " + util.allspark_version())
-    logger.log("Installed at " + util.allspark_dir())
 
     # Output tool versions
     util.shell_run("python --version")

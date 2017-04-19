@@ -1,6 +1,6 @@
 """Setup script for AllSpark-CLI."""
 from __future__ import print_function
-from setuptools import setup
+from setuptools import setup, find_packages
 import codecs
 import os
 import re
@@ -44,7 +44,15 @@ setup(
     include_package_data=True,
     platforms='any',
     zip_safe=False,
-    package_data={
-        '': ['*.json']
-    },
+    classifiers=[
+    'Development Status :: 3 - Alpha',
+
+    'Intended Audience :: Developers',
+    'Topic :: Software Development :: Build Tools',
+
+    'License :: OSI Approved :: MIT License',
+
+    'Programming Language :: Python :: 2.7',
+
+    ],
 )

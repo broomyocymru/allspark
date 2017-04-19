@@ -11,4 +11,4 @@ def cli(name):
     if name == "list":
         api.list_vms()
     else:
-        print("use:   ssh -F software/ssh_config.conf " + api.get_vm_ip(name))
+        print("use: ssh -F software/ssh_config.conf " + api.get_vm_ip(name))
