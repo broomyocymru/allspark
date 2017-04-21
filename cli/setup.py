@@ -65,7 +65,6 @@ setup(
     zip_safe=False,
     classifiers=[
     'Development Status :: 3 - Alpha',
-    'Topic :: Software Development :: Infra Tools',
     'License :: OSI Approved :: MIT License',
     'Programming Language :: Python :: 2.7',
     ],

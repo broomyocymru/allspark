@@ -97,7 +97,10 @@ class AllsparkGenerator:
                 util.makedir(self.project_infra_dir + "/")
                 util.makedir(self.project_software_dir + "/")
                 util.makedir(self.project_ssh_dir + "/")
-                util.shell_run("touch allspark.rsa", cwd=self.project_ssh_dir) # todo - temp workaround where terraform expects a file to exist at plan evaulation
+
+                # todo - temp workaround where terraform expects a file to exist at plan evaulation
+                util.shell_run("touch allspark.rsa", cwd=self.project_ssh_dir)
+                util.shell_run("touch allspark.rsa.pub", cwd=self.project_ssh_dir)
 
                 logger.log("init infrastructure code")
                 self.generate_infra()
