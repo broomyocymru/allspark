@@ -159,6 +159,11 @@ class AllsparkGenerator:
         # Software
         if apply_software and util.confirm(batch, 'Apply Software Changes [Y/N] :'):
             role_path = self.project_software_dir + "/roles"
+
+            # Hack to drop/recreate roles due to ansible-galaxy bug!
+            if force:
+                util.shell_run("rm -r " + role_path, cwd=self.project_software_dir)
+
             util.shell_run("ansible-galaxy install " + an_force + " -r allsparks.yml -p " + role_path, cwd=self.project_software_dir)
 
             logger.log("")
