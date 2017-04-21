@@ -36,30 +36,39 @@ def remove_non_ascii(s):
     return "".join(i for i in s if ord(i) < 128)
 
 
-def shell_run(cmd, cwd=os.getcwd(), check_call=True, ctx=None):
-    p = Popen(cmd, shell=True, cwd=cwd, stdin=PIPE, stdout=PIPE, stderr=STDOUT, universal_newlines=True)
-    output = ""
-    while True:
-        next_line = p.stdout.readline()
-        output += next_line
+def shell_run(cmd, cwd=os.getcwd(), check_call=True, ctx=None, detach=False):
 
-        if next_line == "" and p.poll() is not None:
-            break
+    stderr = STDOUT
+    if detach:
+        stderr = PIPE
 
-        sys.stdout.write(next_line)
-        sys.stdout.flush()
+    p = Popen(cmd, shell=True, cwd=cwd, stdin=PIPE, stdout=PIPE, stderr=stderr, universal_newlines=True)
 
-    if check_call and p.returncode != 0:
-        logger.error("Error running '" + str(p.returncode) + "'")
-        logger.error("ResultCode: " + str(p.returncode))
-        sys.stdout.flush()
+    if not detach:
+        output = ""
+        while True:
+            next_line = p.stdout.readline()
+            output += next_line
 
-        if ctx is not None:
-            ctx.set_return_error(True)
-            if ctx.continue_processing:
-                ctx.execute_state = False
+            if next_line == "" and p.poll() is not None:
+                break
 
-    return {"result_code": p.returncode, "std_out": output}
+            sys.stdout.write(next_line)
+            sys.stdout.flush()
+
+        if check_call and p.returncode != 0:
+            logger.error("Error running '" + str(p.returncode) + "'")
+            logger.error("ResultCode: " + str(p.returncode))
+            sys.stdout.flush()
+
+            if ctx is not None:
+                ctx.set_return_error(True)
+                if ctx.continue_processing:
+                    ctx.execute_state = False
+
+        return {"result_code": p.returncode, "std_out": output}
+    else:
+        return {"result_code": 0, "std_out": ""}
 
 
 def is_shell_tool(name):

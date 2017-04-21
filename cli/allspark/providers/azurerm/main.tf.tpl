@@ -7,12 +7,19 @@ provider "azurerm" {
 }
 
 module "allspark" {
-  source              = "github.com/broomyocymru/tf_azurerm_allspark_vpc"
-  name                = "allspark"
-  bastion_username    = "allspark"
-  bastion_password    = "A11Spark!"
+  source            = "github.com/broomyocymru/tf_azurerm_allspark_vpc"
+  name              = "devops"
+  bastion_enabled   = "1"
+  bastion_config    = {
+    username = "allspark"
+    password = "A11Spark!"
+  }
 }
 
 output "allspark_vpc_out" {
-  value = "${module.allspark.*.allspark_data}"
+  value = "${module.allspark.allspark_data}"
+}
+
+output "allspark_bastion" {
+  value = "${module.allspark.bastion_data}"
 }

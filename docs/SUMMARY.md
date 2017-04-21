@@ -14,6 +14,7 @@
   * [Virtual Machine](/architecture/virtual-machine.md)
   * [Container Hosting](/architecture/kubernetes.md)
   * [Identity and Access Management](/architecture/iam.md)
+  * [Virtual Private Cloud Peer](/architecture/vpc-peer.md)
   * [Virtual Desktop](/architecture/vdi.md)  
   * [Load Balancer](/architecture/load-balancer.md)
   * [Web Application Firewall](/architecture/waf.md)

@@ -1,7 +1,10 @@
 ---
-{% for spark, data in data.sparks.iteritems() %}
+{%- for spark, data in data.sparks.iteritems() -%}
+{% if data.software %}
 - name: Setup {{ spark }}
   hosts: {{ spark }}
+  become: true
   roles:
-    - { role: {{data.software.name}} {% for pkey, pvalue in data.software.params.iteritems() %}, {{pkey}}: "{{pvalue}}"{% endfor %} }
-{% endfor %}
+    - { role: {{data.software.name}} }
+{% endif %}
+{%- endfor -%}

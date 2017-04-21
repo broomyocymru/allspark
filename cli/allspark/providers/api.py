@@ -47,8 +47,24 @@ def init(project_path, provider):
     gen = state.AllsparkGenerator(project_path)
     gen.generate(provider)
 
-def update(dry, batch, force):
-    CWD.update(dry, batch, force)
+def update(cmd, dry, batch, force):
+    if cmd == "software":
+        apply_infra = False
+        apply_software = True
+        batch = True
+    elif cmd == "infra":
+        apply_infra = True
+        apply_software = False
+    else:
+        apply_infra = False
+        apply_software = False
+        batch = True
+
+    if dry:
+        apply_infra = False
+        apply_software = False
+
+    CWD.update(batch, force, apply_infra, apply_software)
 
 def nuke(force):
     CWD.nuke(force)

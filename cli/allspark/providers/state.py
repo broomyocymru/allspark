@@ -52,10 +52,10 @@ class AllsparkGenerator:
     def generate_ssh_config(self):
         data = {}
 
-        # Get all the VPC its bastions
+        # Get all the VPC bastions
         for k, v in self.tf_out().iteritems():
-            if k.endswith("_vpc_out"):
-                vpc_name = k.replace("_vpc_out", "")
+            if k.endswith("_bastion"):
+                vpc_name = k.replace("_bastion", "")
                 vpc_bastion_ip = v['value']['bastion_ip']
                 data[vpc_bastion_ip] = {
                     "name": vpc_name,
@@ -87,8 +87,8 @@ class AllsparkGenerator:
         try:
             if os.path.exists(self.project_dir):
                 util.write_template("common/sparks.tf.tpl", self.data, self.project_infra_dir + "/sparks.tf")
-                # todo - change to filter src list for duplicates
-                util.write_template("common/allsparks.yml.tpl", self.data, self.project_software_dir + "/allsparks.yml")
+                util.write_template("common/allsparks.yml.tpl", self.get_src_data(), self.project_software_dir + "/allsparks.yml")
+                util.write_template("common/site.yml.tpl", self.data, self.project_software_dir + "/site.yml")
 
             else:
                 util.makedir(self.project_dir + "/")
@@ -110,6 +110,16 @@ class AllsparkGenerator:
             logger.error("Error creating project")
             traceback.print_exc()
 
+    def get_src_data(self):
+        src_list = ["https://github.com/broomyocymru/allspark.common"]
+
+        for key, value in self.data["sparks"].iteritems():
+            if "software" in value:
+                if "src" in value["software"]:
+                    src_list.append(value["software"]["src"])
+
+        return list(set(src_list))
+
     def generate_infra(self):
         provider = self.get_provider()
         util.write_template(provider + "/main.tf.tpl", {}, self.project_infra_dir + "/main.tf")
@@ -127,23 +137,18 @@ class AllsparkGenerator:
         if util.confirm(force, 'Destroy Infrastructure? [Y/N] :'):
             util.shell_run("terraform destroy -force", cwd=self.project_infra_dir)
 
-    def update(self, dry, batch, force):
+    def update(self, batch, force, apply_infra, apply_software):
         self.check_project_dir()
         self.generate()
 
         tf_force = " -update" if force else ""
-        an_force = " -f" if force else ""
+        an_force = " --force" if force else ""
 
-        # Download terraform and ansible modules
-        util.shell_run("terraform get" + tf_force, cwd=self.project_infra_dir)
-
-        role_path = self.project_software_dir + "/roles"
-        util.shell_run("ansible-galaxy install -r allsparks.yml -p " + role_path + an_force, cwd=self.project_software_dir)
-
-        if util.confirm(batch, 'Plan Infrastructure Changes [Y/N] :'):
+        if apply_infra and util.confirm(batch, 'Plan Infrastructure Changes [Y/N] :'):
+            util.shell_run("terraform get" + tf_force, cwd=self.project_infra_dir)
             util.shell_run("terraform plan", cwd=self.project_infra_dir)
 
-            if not dry and util.confirm(batch, 'Apply Infrastructure Changes [Y/N] :'):
+            if util.confirm(batch, 'Apply Infrastructure Changes [Y/N] :'):
                 logger.log("")
                 logger.log("Build Infrastructure")
                 logger.log("")
@@ -151,14 +156,17 @@ class AllsparkGenerator:
                 util.shell_run("terraform output -json > " + self.tf_outputs, cwd=self.project_infra_dir) # get output variables
                 self.generate_ssh_config()
 
-                # Software
-                if not dry and util.confirm(batch, 'Apply Software Changes [Y/N] :'):
-                    logger.log("")
-                    logger.log("Provision Software")
-                    logger.log("")
-                    util.shell_run("ansible -i inventory.py -m ping ssh.*", cwd=self.project_software_dir)
-                    #util.shell_run("ansible -i inventory.py -m win_ping winrm.*", cwd=self.project_software_dir)
-                    util.shell_run("ansible-playbook site.yml -i inventory.py", cwd=self.project_software_dir)
+        # Software
+        if apply_software and util.confirm(batch, 'Apply Software Changes [Y/N] :'):
+            role_path = self.project_software_dir + "/roles"
+            util.shell_run("ansible-galaxy install " + an_force + " -r allsparks.yml -p " + role_path, cwd=self.project_software_dir)
+
+            logger.log("")
+            logger.log("Provision Software")
+            logger.log("")
+            util.shell_run("ansible -i inventory.py -m ping ssh.*", cwd=self.project_software_dir)
+            #util.shell_run("ansible -i inventory.py -m win_ping winrm.*", cwd=self.project_software_dir)
+            util.shell_run("ansible-playbook site.yml -i inventory.py", cwd=self.project_software_dir)
 
     def add(self, name, spark):
         self.check_project_dir()
