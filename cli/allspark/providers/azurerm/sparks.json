@@ -18,13 +18,19 @@
           }
        },
        {
-          "id": "vdi",
-          "description": "Virtual Desktop",
+          "id": "win-vdi",
+          "description": "Windows Virtual Desktop",
           "infra": {
              "src": "github.com/broomyocymru/tf_azurerm_allspark_vm",
              "params": {
                "name" : "<name>",
-               "vm": "desktop_win10"
+               "allspark": "${module.allspark.allspark_data}",
+               "bastion" : "${module.allspark.bastion_data}",
+               "username": "<random_username>",
+               "password": "<random_password>",
+               "role"    : "desktop_win10",
+               "vm"      : "desktop_win10",
+               "subnet"  : "admin"
              },
              "list_params": {
                 "vpc_inbound_ports": ["22", "3389"]
@@ -35,27 +41,56 @@
           }
        },
        {
+          "id": "ubuntu-vdi",
+          "description": "Ubuntu Virtual Desktop",
+          "infra": {
+             "src": "github.com/broomyocymru/tf_azurerm_allspark_vm",
+             "params": {
+               "name" : "<name>",
+               "allspark": "${module.allspark.allspark_data}",
+               "bastion" : "${module.allspark.bastion_data}",
+               "username": "<random_username>",
+               "password": "<random_password>",
+               "role"    : "desktop_ubuntu16",
+               "vm"      : "desktop_ubuntu16",
+               "subnet"  : "admin"
+             },
+             "list_params": {
+                "vpc_inbound_ports": ["22", "3389"]
+             },
+             "outputs": {
+                "<name>_vm_out": "${module.<name>.allspark_data}"
+             }
+          },
+          "software": {
+            "name": "allspark.desktop_ubuntu16",
+            "src": "https://github.com/broomyocymru/allspark.desktop_ubuntu16"
+          }
+       },
+       {
          "id": "jenkins",
-         "description": "Jenkins v2",
+         "description": "Jenkins 2",
          "infra": {
             "src": "github.com/broomyocymru/tf_azurerm_allspark_vm",
             "params": {
-              "allspark": "${module.<vpc>.allspark_data}",
-              "bastion": "${module.<vpc>.bastion_data}",
+              "name" : "<name>",
+              "allspark": "${module.allspark.allspark_data}",
+              "bastion": "${module.allspark.bastion_data}",
               "username": "<random_username>",
               "password": "<random_password>",
               "role"    : "jenkins2",
               "subnet"  : "admin"
             },
             "list_params": {
-                "vpc_inbound_ports": ["22", "80", "443"]
+                "vpc_inbound_ports": ["22", "8080"]
             },
             "outputs": {
               "<name>_vm_out": "${module.<name>.allspark_data}"
             }
          },
          "software": {
-            "src": "https://github.com/broomyocymru/allspark.common"
+            "name": "allspark.jenkins2",
+            "src": "https://github.com/broomyocymru/allspark.jenkins2"
          }
       }
    ]
