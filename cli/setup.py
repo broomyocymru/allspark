@@ -28,11 +28,30 @@ setup(
     name='allspark',
     version=find_version('allspark', '__init__.py'),
     license='MIT',
-    author='Anthony Broome',
+    author='Ant Broome',
+    url = 'https://github.com/broomyocymru/allspark', # use the URL to the github repo
+    download_url = 'https://github.com/broomyocymru/allspark/archive/' + find_version('allspark', '__init__.py') +'.tar.gz',
     setup_requires=['pytest-runner',],
     tests_require=['pytest',],
-    install_requires=[],
-    author_email='anthony.broome@capgemini.com',
+    install_requires=[
+        'ansible>=2.2.1.0',
+        'pywinrm>=0.2.2',
+        'azure-cli>=2.0.0',
+        'oauthlib>=0.7.2',
+        'requests>=2.9.1',
+        'requests-oauthlib>=0.5.0',
+        'requests-toolbelt>=0.4.0',
+        'tlslite>=0.4.8',
+        'click>=6.6',
+        'jsonmerge>=1.1.0',
+        'jsonschema>=2.5.1',
+        'vcversioner>=2.14.0.0',
+        'jinja2>=2.9.5',
+        'keyring>=9.0',
+        'colorama>=0.3.7',
+        'pyyaml>=3.12'
+    ],
+    author_email='broomyocymru@hotmail.com',
     description='AllSpark CLI',
     long_description="",
     entry_points={
@@ -40,19 +59,14 @@ setup(
             'allspark = allspark.allspark:cli',
         ],
     },
-    packages=['allspark', 'allspark.core', 'allspark.commands', 'allspark.providers'],
+    packages=['allspark', 'allspark.core', 'allspark.commands', 'allspark.providers', 'allspark.providers.azurerm', 'allspark.providers.common'],
     include_package_data=True,
     platforms='any',
     zip_safe=False,
     classifiers=[
     'Development Status :: 3 - Alpha',
-
-    'Intended Audience :: Developers',
-    'Topic :: Software Development :: Build Tools',
-
+    'Topic :: Software Development :: Infra Tools',
     'License :: OSI Approved :: MIT License',
-
     'Programming Language :: Python :: 2.7',
-
     ],
 )

@@ -56,8 +56,8 @@ def update(cmd, dry, batch, force):
         apply_infra = True
         apply_software = False
     else:
-        apply_infra = False
-        apply_software = False
+        apply_infra = True
+        apply_software = True
         batch = True
 
     if dry:
