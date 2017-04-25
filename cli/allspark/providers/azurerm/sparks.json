@@ -2,7 +2,7 @@
    "sparks":[
        {
           "id": "vpc",
-          "description": "allspark virtual network",
+          "description": "Virtual Private Cloud (Public Bastion optional)",
           "infra": {
              "src": "github.com/broomyocymru/tf_azurerm_allspark_vpc",
              "params": {
@@ -18,7 +18,7 @@
           }
        },
        {
-          "id": "win-vdi",
+          "id": "vdi-win",
           "description": "Windows Virtual Desktop",
           "infra": {
              "src": "github.com/broomyocymru/tf_azurerm_allspark_vm",
@@ -41,7 +41,7 @@
           }
        },
        {
-          "id": "ubuntu-vdi",
+          "id": "vdi-ubuntu",
           "description": "Ubuntu Virtual Desktop",
           "infra": {
              "src": "github.com/broomyocymru/tf_azurerm_allspark_vm",
@@ -91,6 +91,18 @@
          "software": {
             "name": "allspark.jenkins2",
             "src": "https://github.com/broomyocymru/allspark.jenkins2"
+         }
+      },
+      {
+         "id": "vpc-peer",
+         "description": "VPC Peer",
+         "infra":{
+            "src": "github.com/broomyocymru/tf_azurerm_allspark_vpc_peer",
+            "params": {
+              "primary_vpc": "${module.<primary_vpc>.allspark_data}",
+              "secondary_vpc": "${module.<secondary_vpc>.allspark_data}",
+              "bidirectional": "true"
+            }
          }
       }
    ]
