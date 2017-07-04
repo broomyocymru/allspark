@@ -94,6 +94,58 @@
          }
       },
       {
+        "id": "nexus",
+        "description": "Nexus OSS",
+        "infra": {
+           "src": "github.com/broomyocymru/tf_azurerm_allspark_vm",
+           "params": {
+             "name" : "<name>",
+             "allspark": "${module.allspark.allspark_data}",
+             "bastion": "${module.allspark.bastion_data}",
+             "username": "<random_username>",
+             "password": "<random_password>",
+             "role"    : "nexus",
+             "subnet"  : "admin"
+           },
+           "list_params": {
+               "vpc_inbound_ports": ["22", "8081"]
+           },
+           "outputs": {
+             "<name>_vm_out": "${module.<name>.allspark_data}"
+           }
+        },
+        "software": {
+           "name": "ansible-nexus-oss",
+           "src": "https://github.com/geerlingguy/ansible-role-gitlab"
+        }
+      },
+      {
+        "id": "gitlab",
+        "description": "GitLab CE",
+        "infra": {
+           "src": "github.com/broomyocymru/tf_azurerm_allspark_vm",
+           "params": {
+             "name" : "<name>",
+             "allspark": "${module.allspark.allspark_data}",
+             "bastion": "${module.allspark.bastion_data}",
+             "username": "<random_username>",
+             "password": "<random_password>",
+             "role"    : "nexus",
+             "subnet"  : "admin"
+           },
+           "list_params": {
+               "vpc_inbound_ports": ["22", "8080"]
+           },
+           "outputs": {
+             "<name>_vm_out": "${module.<name>.allspark_data}"
+           }
+        },
+        "software": {
+           "name": "ansible-gitlab-ce",
+           "src": "https://github.com/mrlesmithjr/ansible-gitlab-ce"
+        }
+      },
+      {
          "id": "vpc-peer",
          "description": "VPC Peer",
          "infra":{

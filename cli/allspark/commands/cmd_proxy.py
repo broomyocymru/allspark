@@ -6,13 +6,16 @@ from subprocess import Popen
 
 @click.command('proxy')
 @click.argument('name')
-def cli(name):
+@click.option('--protocol', default="ssh")
+def cli(name, protocol):
     """Proxy to an AllSpark VM (ssh)"""
     if name == "list":
         api.list_vms()
     else:
-        print("For SSH")
-        print("use: ssh -F software/ssh_config.conf " + api.get_vm_ip(name))
-        print("")
-        print("For RDP (ssh tunnel through bastion) then connect a RDP client to 127.0.0.1:3389")
-        print("use: ssh -F software/ssh_config.conf -L 3389:" + api.get_vm_ip(name) +":3389")
+        if protocol == "ssh":
+            print("ssh -F software/ssh_config.conf " + api.get_vm_ip(name))
+        elif protocol == "rdp":
+            print("For RDP (ssh tunnel through bastion) then connect a RDP client to 127.0.0.1:3389")
+            print("ssh -F software/ssh_config.conf -L 3389:" + api.get_vm_ip(name) +":3389 " + api.get_bastion_ip(name))
+        else:
+            print("Protocol " + protocol + " not supported!")

@@ -97,10 +97,7 @@ class AllsparkGenerator:
                 util.makedir(self.project_infra_dir + "/")
                 util.makedir(self.project_software_dir + "/")
                 util.makedir(self.project_ssh_dir + "/")
-
-                # todo - temp workaround where terraform expects a file to exist at plan evaulation
-                util.shell_run("touch allspark.rsa", cwd=self.project_ssh_dir)
-                util.shell_run("touch allspark.rsa.pub", cwd=self.project_ssh_dir)
+                util.shell_run("if [ ! -f 'allspark.rsa' ]; then ssh-keygen -f 'allspark.rsa' -t rsa -N ''; fi", cwd=self.project_ssh_dir)
 
                 logger.log("init infrastructure code")
                 self.generate_infra()
@@ -144,37 +141,46 @@ class AllsparkGenerator:
         self.check_project_dir()
         self.generate()
 
+        result_code = 0
         tf_force = " -update" if force else ""
         an_force = " --force" if force else ""
 
+        # Infrastructure
         if apply_infra and util.confirm(batch, 'Plan Infrastructure Changes [Y/N] :'):
-            util.shell_run("terraform get" + tf_force, cwd=self.project_infra_dir)
-            util.shell_run("terraform plan", cwd=self.project_infra_dir)
+            result_code = util.shell_run("terraform get" + tf_force, cwd=self.project_infra_dir)["result_code"]
+            if result_code == 0:
+                result_code = util.shell_run("terraform plan", cwd=self.project_infra_dir)["result_code"]
 
-            if util.confirm(batch, 'Apply Infrastructure Changes [Y/N] :'):
-                logger.log("")
-                logger.log("Build Infrastructure")
-                logger.log("")
-                util.shell_run("terraform apply", cwd=self.project_infra_dir) # apply infra changes
-                util.shell_run("terraform output -json > " + self.tf_outputs, cwd=self.project_infra_dir) # get output variables
-                self.generate_ssh_config()
+                if result_code == 0 and util.confirm(batch, 'Apply Infrastructure Changes [Y/N] :'):
+                    logger.log("")
+                    logger.log("Build Infrastructure")
+                    logger.log("")
+                    result_code = util.shell_run("terraform apply", cwd=self.project_infra_dir)["result_code"] # apply infra changes
+                    if result_code == 0:
+                        result_code = util.shell_run("terraform output -json > " + self.tf_outputs, cwd=self.project_infra_dir)["result_code"] # get output variables
+                        self.generate_ssh_config()
 
         # Software
-        if apply_software and util.confirm(batch, 'Apply Software Changes [Y/N] :'):
+        if result_code == 0 and apply_software and util.confirm(batch, 'Apply Software Changes [Y/N] :'):
             role_path = self.project_software_dir + "/roles"
 
             # Hack to drop/recreate roles due to ansible-galaxy bug!
             if force:
                 util.shell_run("rm -r " + role_path, cwd=self.project_software_dir)
 
-            util.shell_run("ansible-galaxy install " + an_force + " -r allsparks.yml -p " + role_path, cwd=self.project_software_dir)
+            result_code = util.shell_run("ansible-galaxy install " + an_force + " -r allsparks.yml -p " + role_path, cwd=self.project_software_dir)["result_code"]
 
-            logger.log("")
-            logger.log("Provision Software")
-            logger.log("")
-            util.shell_run("ansible -i inventory.py -m ping ssh.*", cwd=self.project_software_dir)
-            #util.shell_run("ansible -i inventory.py -m win_ping winrm.*", cwd=self.project_software_dir)
-            util.shell_run("ansible-playbook site.yml -i inventory.py", cwd=self.project_software_dir)
+            if result_code == 0:
+                logger.log("")
+                logger.log("Provision Software")
+                logger.log("")
+                result_code = util.shell_run("ansible -i inventory.py -m ping ssh.*", cwd=self.project_software_dir)["result_code"]
+                #util.shell_run("ansible -i inventory.py -m win_ping winrm.*", cwd=self.project_software_dir)
+                if result_code == 0:
+                    result_code = util.shell_run("ansible-playbook site.yml -i inventory.py", cwd=self.project_software_dir)["result_code"]
+
+        return result_code
+
 
     def add(self, name, spark):
         self.check_project_dir()

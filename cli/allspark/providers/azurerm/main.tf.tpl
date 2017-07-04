@@ -8,11 +8,11 @@ provider "azurerm" {
 
 module "allspark" {
   source            = "github.com/broomyocymru/tf_azurerm_allspark_vpc"
-  name              = "devops"
+  name              = "allspark"
   bastion_enabled   = "1"
   bastion_config    = {
-    username = "allspark"
-    password = "A11Spark!"
+    username = "<random_username>"
+    password = "<random_password>"
   }
 }
 

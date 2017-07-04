@@ -155,6 +155,7 @@ def write_template(template, data, output_file):
     env.filters["replace"] = template_replace
     template = env.get_template(template)
     content = template.render(data=data)
+    content = template_replace(content)
 
     f.write(content)
     f.close()

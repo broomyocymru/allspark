@@ -48,17 +48,16 @@ def init(project_path, provider):
     gen.generate(provider)
 
 def update(cmd, dry, batch, force):
+    CWD.check_project_dir()
     if cmd == "software":
         apply_infra = False
         apply_software = True
-        batch = True
     elif cmd == "infra":
         apply_infra = True
         apply_software = False
     else:
         apply_infra = True
         apply_software = True
-        batch = True
 
     if dry:
         apply_infra = False
@@ -67,14 +66,17 @@ def update(cmd, dry, batch, force):
     CWD.update(batch, force, apply_infra, apply_software)
 
 def nuke(force):
+    CWD.check_project_dir()
     CWD.nuke(force)
 
 def add(spark, name, provider):
+    CWD.check_project_dir()
     data = get_spark(spark, provider)
     data = set_spark_params(data)
     CWD.add(name, data)
 
 def list():
+    CWD.check_project_dir()
     sparks = CWD.list()
     logger.log("Sparks added to Project = " + str(len(sparks)))
 
@@ -82,12 +84,19 @@ def list():
         logger.log(name + ": " + config['description'])
 
 def list_vms():
+    CWD.check_project_dir()
     for name, ip in CWD.vms().iteritems():
         logger.log(name + ": " + ip)
 
 def get_vm_ip(name):
+    CWD.check_project_dir()
     vm = CWD.tf_out()[name + "_vm_out"]
     return vm['value']['private_ip']
+
+def get_bastion_ip(name):
+    CWD.check_project_dir()
+    vm = CWD.tf_out()[name + "_vm_out"]
+    return vm['value']['bastion_ip']
 
 def remove(name):
     CWD.remove(name)
