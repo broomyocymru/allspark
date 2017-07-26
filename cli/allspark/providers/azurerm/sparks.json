@@ -24,8 +24,8 @@
              "src": "github.com/broomyocymru/tf_azurerm_allspark_vm",
              "params": {
                "name" : "<name>",
-               "allspark": "${module.allspark.allspark_data}",
-               "bastion" : "${module.allspark.bastion_data}",
+               "allspark": "${module.<prompt msg='Which VPC?'/>.allspark_data}",
+               "bastion" : "${module.v.bastion_data}",
                "username": "<random_username>",
                "password": "<random_password>",
                "role"    : "desktop_win10",

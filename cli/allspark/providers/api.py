@@ -9,7 +9,7 @@ CWD = state.AllsparkGenerator(os.getcwd())
 
 # Provider Methods
 def providers():
-    return ['azurerm']
+    return ['azurerm', 'aws']
 
 # Sparks Methods
 def get_sparks(provider):
@@ -36,6 +36,15 @@ def get_spark(name, provider):
         if(spark['id'] == name):
             return spark
     util.abort("Invalid Spark")
+
+def get_provider():
+    if CWD.is_project_dir():
+        return CWD.get_provider()
+    else:
+        return None
+
+def is_project_dir():
+    return CWD.is_project_dir()
 
 def set_spark_params(data):
     # <generate_password>

@@ -145,8 +145,9 @@ def write_template(template, data, output_file):
     f = open(output_file, "w+")
 
     loader = PrefixLoader({
-        'common': PackageLoader('allspark.providers', 'common'),
-        'azurerm': PackageLoader('allspark.providers', 'azurerm')
+        'aws': PackageLoader('allspark.providers', 'aws'),
+        'azurerm': PackageLoader('allspark.providers', 'azurerm'),
+        'ansible': PackageLoader('allspark.provisioners', 'ansible')
     })
     env = Environment(
         loader=loader,
@@ -170,11 +171,12 @@ def template_replace(text, name=None, data={}):
     if(name is not None and "<name>" in text):
         text = text.replace("<name>", name)
 
-    # todo - something clever with flattening dict
+    # todo - something clever with flattening data dict and replace
 
     # prompted text
-    if("<prompt|" in text):
-        logger.log("todo - process prompt tags!")
+    for msg in re.findall("<prompt msg='(.+?)'/>", text):
+        response = raw_input(msg + ": ")
+        text = text.replace("<prompt msg='" + msg + "'/>", response)
 
     return text
 

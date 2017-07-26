@@ -15,7 +15,7 @@ def spark_list():
 
 
 @cli.command('available')
-@click.option('--provider', prompt=config.not_set("allspark.provider"), default=config.get("allspark.provider"))
+@click.option('--provider', prompt=(not api.is_project_dir()), default=api.get_provider(), type=click.Choice(api.providers()))
 def spark_list(provider):
     """Provides the list of available packages to install"""
     api.available(provider)
@@ -24,8 +24,8 @@ def spark_list(provider):
 @cli.command('add')
 @click.argument('spark')
 @click.option('--name', prompt=True)
-@click.option('--provider', prompt=config.not_set("allspark.provider"), default=config.get("allspark.provider"))
-def spark_add(spark, name, provider):
+def spark_add(spark, name):
+    provider = api.get_provider()
     api.is_valid(spark, provider)
     api.add(spark, name, provider)
     logger.log("Added " + spark)

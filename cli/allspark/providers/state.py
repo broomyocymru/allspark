@@ -49,6 +49,9 @@ class AllsparkGenerator:
         else:
             util.abort("Error: Allspark project not found!")
 
+    def is_project_dir(self):
+        return os.path.exists(self.project_config)
+
     def generate_ssh_config(self):
         data = {}
 
@@ -78,7 +81,7 @@ class AllsparkGenerator:
                 }
 
         logger.vjson(data)
-        util.write_template("common/ssh_config.tpl", data, self.project_software_dir + "/ssh_config.conf")
+        util.write_template("ansible/ssh_config.tpl", data, self.project_software_dir + "/ssh_config.conf")
 
     def generate(self, provider=None):
         if(provider is None):
@@ -86,9 +89,9 @@ class AllsparkGenerator:
 
         try:
             if os.path.exists(self.project_dir):
-                util.write_template("common/sparks.tf.tpl", self.data, self.project_infra_dir + "/sparks.tf")
-                util.write_template("common/allsparks.yml.tpl", self.get_src_data(), self.project_software_dir + "/allsparks.yml")
-                util.write_template("common/site.yml.tpl", self.data, self.project_software_dir + "/site.yml")
+                util.write_template("ansible/sparks.tf.tpl", self.data, self.project_infra_dir + "/sparks.tf")
+                util.write_template("ansible/allsparks.yml.tpl", self.get_src_data(), self.project_software_dir + "/allsparks.yml")
+                util.write_template("ansible/site.yml.tpl", self.data, self.project_software_dir + "/site.yml")
 
             else:
                 util.makedir(self.project_dir + "/")
@@ -127,7 +130,7 @@ class AllsparkGenerator:
         util.write_template(provider + "/terraform.tfvars.tpl", {}, self.project_infra_dir + "/terraform.tfvars")
 
     def generate_software(self):
-        util.write_template("common/ansible.cfg.tpl", {}, self.project_software_dir + "/ansible.cfg")
+        util.write_template("ansible/ansible.cfg.tpl", {}, self.project_software_dir + "/ansible.cfg")
         util.download("https://raw.githubusercontent.com/broomyocymru/terraform.py/master/terraform.py", self.project_software_dir + "/inventory.py")
         util.shell_run("chmod +x inventory.py", cwd=self.project_software_dir)
 

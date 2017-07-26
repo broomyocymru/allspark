@@ -58,7 +58,14 @@ setup(
             'allspark = allspark.allspark:cli',
         ],
     },
-    packages=['allspark', 'allspark.core', 'allspark.commands', 'allspark.providers', 'allspark.providers.azurerm', 'allspark.providers.common'],
+    packages=[
+        'allspark',
+        'allspark.core',
+        'allspark.commands',
+        'allspark.providers',
+        'allspark.providers.azurerm',
+        'allspark.provisioners.ansible'
+    ],
     include_package_data=True,
     platforms='any',
     zip_safe=False,

@@ -1,0 +1,21 @@
+{
+   "sparks":[
+       {
+          "id": "vpc",
+          "description": "Virtual Private Cloud (Public Bastion optional)",
+          "infra": {
+             "src": "github.com/broomyocymru/tf_aws_allspark_vpc",
+             "params": {
+               "name" : "<name>"
+             },
+             "list_params": {
+               "subnet_names": ["web", "biz", "data"],
+               "subnets": ["10.0.1.0", "10.0.2.0", "10.0.3.0"]
+             },
+             "outputs": {
+                "<name>_vpc_out": "${module.<name>.allspark_data}"
+             }
+          }
+      }
+   ]
+}
