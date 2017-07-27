@@ -1,4 +1,4 @@
-# AllSpark
+# AllSpark ![build-status](https://travis-ci.org/broomyocymru/allspark.svg?branch=master)
 Bringing infrastructure to life whilst avoiding lock-in!
 
 
