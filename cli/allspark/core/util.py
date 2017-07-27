@@ -11,7 +11,7 @@ from pip import get_installed_distributions
 import pkg_resources
 from jinja2 import Environment, PackageLoader, PrefixLoader, select_autoescape
 import requests
-import logger, randomness
+from allspark.core import logger, randomness
 import re
 
 

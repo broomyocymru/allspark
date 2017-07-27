@@ -1,0 +1,78 @@
+actionid: py27
+msg: installpkg
+cmdargs: ['/Users/anthonybroome/google_drive/allspark/cli/.tox/py27/bin/pip', 'install', '/Users/anthonybroome/google_drive/allspark/cli/.tox/dist/allspark-0.1.3.zip']
+env: {'GOPATH': '/Users/anthonybroome/gopath', 'rvm_version': '1.28.0 (latest)', 'rvm_path': '/Users/anthonybroome/.rvm', 'TERM_PROGRAM_VERSION': '388.1.1', 'RUBY_VERSION': 'ruby-2.3.3', 'LOGNAME': 'anthonybroome', 'USER': 'anthonybroome', 'HOME': '/Users/anthonybroome', 'PATH': '/Users/anthonybroome/google_drive/allspark/cli/.tox/py27/bin:/Users/anthonybroome/Downloads/google-cloud-sdk/bin:/Users/anthonybroome/.rvm/gems/ruby-2.3.3/bin:/Users/anthonybroome/.rvm/gems/ruby-2.3.3@global/bin:/Users/anthonybroome/.rvm/rubies/ruby-2.3.3/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/opt/X11/bin:/usr/local/share/dotnet:/Users/anthonybroome/Library/Python/2.7/bin:/Users/anthonybroome/.rvm/bin:/Users/anthonybroome/bin:/usr/local/go/bin', 'DISPLAY': '/private/tmp/com.apple.launchd.wHbTuacO45/org.macosforge.xquartz:0', 'TERM_PROGRAM': 'Apple_Terminal', 'LANG': 'en_GB.UTF-8', 'TERM': 'xterm-256color', 'SHELL': '/bin/bash', 'SHLVL': '1', 'SECURITYSESSIONID': '186a6', 'PWD': '/Users/anthonybroome/google_drive/allspark/cli', 'XPC_FLAGS': '0x0', 'PYTHONHASHSEED': '2375014609', 'TMPDIR': '/var/folders/tl/f741nd0n1cj1838m00wj1z640000gn/T/', '_system_arch': 'x86_64', 'GEM_PATH': '/Users/anthonybroome/.rvm/gems/ruby-2.3.3:/Users/anthonybroome/.rvm/gems/ruby-2.3.3@global', 'rvm_bin_path': '/Users/anthonybroome/.rvm/bin', 'TERM_SESSION_ID': '64711754-8BA1-4219-8ACD-731B1B30E2DE', 'SSH_AUTH_SOCK': '/private/tmp/com.apple.launchd.NHz7vUxr9t/Listeners', 'rvm_prefix': '/Users/anthonybroome', 'XPC_SERVICE_NAME': '0', 'IRBRC': '/Users/anthonybroome/.rvm/rubies/ruby-2.3.3/.irbrc', '_system_type': 'Darwin', 'MY_RUBY_HOME': '/Users/anthonybroome/.rvm/rubies/ruby-2.3.3', 'Apple_PubSub_Socket_Render': '/private/tmp/com.apple.launchd.X1gJYV0UWK/Render', '_': '/usr/local/bin/tox', 'VIRTUAL_ENV': '/Users/anthonybroome/google_drive/allspark/cli/.tox/py27', 'OLDPWD': '/Users/anthonybroome', '__CF_USER_TEXT_ENCODING': '0x1F5:0x0:0x2', '_system_name': 'OSX', '_system_version': '10.12', 'GEM_HOME': '/Users/anthonybroome/.rvm/gems/ruby-2.3.3'}
+
+Processing ./.tox/dist/allspark-0.1.3.zip
+Collecting ansible>=2.2.1.0 (from allspark==0.1.3)
+Collecting pywinrm>=0.2.2 (from allspark==0.1.3)
+  Using cached pywinrm-0.2.2-py2.py3-none-any.whl
+Collecting oauthlib>=0.7.2 (from allspark==0.1.3)
+Collecting requests>=2.9.1 (from allspark==0.1.3)
+  Using cached requests-2.18.2-py2.py3-none-any.whl
+Collecting requests-oauthlib>=0.5.0 (from allspark==0.1.3)
+  Using cached requests_oauthlib-0.8.0-py2.py3-none-any.whl
+Collecting requests-toolbelt>=0.4.0 (from allspark==0.1.3)
+  Using cached requests_toolbelt-0.8.0-py2.py3-none-any.whl
+Collecting tlslite>=0.4.8 (from allspark==0.1.3)
+Collecting click>=6.6 (from allspark==0.1.3)
+  Using cached click-6.7-py2.py3-none-any.whl
+Collecting jsonmerge>=1.1.0 (from allspark==0.1.3)
+Collecting jsonschema>=2.5.1 (from allspark==0.1.3)
+  Using cached jsonschema-2.6.0-py2.py3-none-any.whl
+Collecting vcversioner>=2.14.0.0 (from allspark==0.1.3)
+  Using cached vcversioner-2.16.0.0-py2-none-any.whl
+Collecting jinja2>=2.9.5 (from allspark==0.1.3)
+  Using cached Jinja2-2.9.6-py2.py3-none-any.whl
+Collecting keyring>=9.0 (from allspark==0.1.3)
+  Using cached keyring-10.4.0-py2.py3-none-any.whl
+Collecting colorama>=0.3.7 (from allspark==0.1.3)
+  Using cached colorama-0.3.9-py2.py3-none-any.whl
+Collecting pyyaml>=3.12 (from allspark==0.1.3)
+Requirement already satisfied: setuptools in ./.tox/py27/lib/python2.7/site-packages (from ansible>=2.2.1.0->allspark==0.1.3)
+Collecting paramiko (from ansible>=2.2.1.0->allspark==0.1.3)
+  Using cached paramiko-2.2.1-py2.py3-none-any.whl
+Collecting pycrypto>=2.6 (from ansible>=2.2.1.0->allspark==0.1.3)
+Collecting xmltodict (from pywinrm>=0.2.2->allspark==0.1.3)
+  Using cached xmltodict-0.11.0-py2.py3-none-any.whl
+Collecting six (from pywinrm>=0.2.2->allspark==0.1.3)
+  Using cached six-1.10.0-py2.py3-none-any.whl
+Collecting requests-ntlm>=0.3.0 (from pywinrm>=0.2.2->allspark==0.1.3)
+  Using cached requests_ntlm-1.0.0-py2.py3-none-any.whl
+Collecting urllib3<1.23,>=1.21.1 (from requests>=2.9.1->allspark==0.1.3)
+  Using cached urllib3-1.22-py2.py3-none-any.whl
+Collecting certifi>=2017.4.17 (from requests>=2.9.1->allspark==0.1.3)
+  Using cached certifi-2017.4.17-py2.py3-none-any.whl
+Collecting idna<2.6,>=2.5 (from requests>=2.9.1->allspark==0.1.3)
+  Using cached idna-2.5-py2.py3-none-any.whl
+Collecting chardet<3.1.0,>=3.0.2 (from requests>=2.9.1->allspark==0.1.3)
+  Using cached chardet-3.0.4-py2.py3-none-any.whl
+Collecting functools32; python_version == "2.7" (from jsonschema>=2.5.1->allspark==0.1.3)
+Collecting MarkupSafe>=0.23 (from jinja2>=2.9.5->allspark==0.1.3)
+Collecting cryptography>=1.1 (from paramiko->ansible>=2.2.1.0->allspark==0.1.3)
+  Using cached cryptography-2.0-cp27-cp27m-macosx_10_6_intel.whl
+Collecting bcrypt>=3.1.3 (from paramiko->ansible>=2.2.1.0->allspark==0.1.3)
+  Using cached bcrypt-3.1.3-cp27-cp27m-macosx_10_6_intel.whl
+Collecting pyasn1>=0.1.7 (from paramiko->ansible>=2.2.1.0->allspark==0.1.3)
+  Using cached pyasn1-0.2.3-py2.py3-none-any.whl
+Collecting pynacl>=1.0.1 (from paramiko->ansible>=2.2.1.0->allspark==0.1.3)
+  Using cached PyNaCl-1.1.2-cp27-cp27m-macosx_10_6_intel.whl
+Collecting ntlm-auth>=1.0.2 (from requests-ntlm>=0.3.0->pywinrm>=0.2.2->allspark==0.1.3)
+  Using cached ntlm_auth-1.0.5-py2.py3-none-any.whl
+Collecting asn1crypto>=0.21.0 (from cryptography>=1.1->paramiko->ansible>=2.2.1.0->allspark==0.1.3)
+  Using cached asn1crypto-0.22.0-py2.py3-none-any.whl
+Collecting ipaddress (from cryptography>=1.1->paramiko->ansible>=2.2.1.0->allspark==0.1.3)
+  Using cached ipaddress-1.0.18-py2-none-any.whl
+Collecting enum34 (from cryptography>=1.1->paramiko->ansible>=2.2.1.0->allspark==0.1.3)
+  Using cached enum34-1.1.6-py2-none-any.whl
+Collecting cffi>=1.7 (from cryptography>=1.1->paramiko->ansible>=2.2.1.0->allspark==0.1.3)
+  Using cached cffi-1.10.0-cp27-cp27m-macosx_10_6_intel.whl
+Collecting ordereddict (from ntlm-auth>=1.0.2->requests-ntlm>=0.3.0->pywinrm>=0.2.2->allspark==0.1.3)
+Collecting pycparser (from cffi>=1.7->cryptography>=1.1->paramiko->ansible>=2.2.1.0->allspark==0.1.3)
+Building wheels for collected packages: allspark
+  Running setup.py bdist_wheel for allspark: started
+  Running setup.py bdist_wheel for allspark: finished with status 'done'
+  Stored in directory: /Users/anthonybroome/Library/Caches/pip/wheels/4e/2d/c1/168fa964afcebb6568ad14ef06aed2278b5b7b65e7bc9de20b
+Successfully built allspark
+Installing collected packages: asn1crypto, ipaddress, enum34, six, idna, pycparser, cffi, cryptography, bcrypt, pyasn1, pynacl, paramiko, pycrypto, MarkupSafe, jinja2, pyyaml, ansible, xmltodict, urllib3, certifi, chardet, requests, ordereddict, ntlm-auth, requests-ntlm, pywinrm, oauthlib, requests-oauthlib, requests-toolbelt, tlslite, click, functools32, jsonschema, jsonmerge, vcversioner, keyring, colorama, allspark
+Successfully installed MarkupSafe-1.0 allspark-0.1.3 ansible-2.3.1.0 asn1crypto-0.22.0 bcrypt-3.1.3 certifi-2017.4.17 cffi-1.10.0 chardet-3.0.4 click-6.7 colorama-0.3.9 cryptography-2.0 enum34-1.1.6 functools32-3.2.3.post2 idna-2.5 ipaddress-1.0.18 jinja2-2.9.6 jsonmerge-1.4.0 jsonschema-2.6.0 keyring-10.4.0 ntlm-auth-1.0.5 oauthlib-2.0.2 ordereddict-1.1 paramiko-2.2.1 pyasn1-0.2.3 pycparser-2.18 pycrypto-2.6.1 pynacl-1.1.2 pywinrm-0.2.2 pyyaml-3.12 requests-2.18.2 requests-ntlm-1.0.0 requests-oauthlib-0.8.0 requests-toolbelt-0.8.0 six-1.10.0 tlslite-0.4.9 urllib3-1.22 vcversioner-2.16.0.0 xmltodict-0.11.0

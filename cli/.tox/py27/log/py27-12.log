@@ -1,0 +1,16 @@
+actionid: py27
+msg: installpkg
+cmdargs: ['/Users/anthonybroome/google_drive/allspark/cli/.tox/py27/bin/pip', 'install', '-U', '--no-deps', '/Users/anthonybroome/google_drive/allspark/cli/.tox/dist/allspark-0.1.3.zip']
+env: {'GOPATH': '/Users/anthonybroome/gopath', 'rvm_version': '1.28.0 (latest)', 'rvm_path': '/Users/anthonybroome/.rvm', 'TERM_PROGRAM_VERSION': '388.1.1', 'RUBY_VERSION': 'ruby-2.3.3', 'LOGNAME': 'anthonybroome', 'USER': 'anthonybroome', 'HOME': '/Users/anthonybroome', 'PATH': '/Users/anthonybroome/google_drive/allspark/cli/.tox/py27/bin:/Users/anthonybroome/Downloads/google-cloud-sdk/bin:/Users/anthonybroome/.rvm/gems/ruby-2.3.3/bin:/Users/anthonybroome/.rvm/gems/ruby-2.3.3@global/bin:/Users/anthonybroome/.rvm/rubies/ruby-2.3.3/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/opt/X11/bin:/usr/local/share/dotnet:/Users/anthonybroome/Library/Python/2.7/bin:/Users/anthonybroome/.rvm/bin:/Users/anthonybroome/bin:/usr/local/go/bin', 'DISPLAY': '/private/tmp/com.apple.launchd.wHbTuacO45/org.macosforge.xquartz:0', 'TERM_PROGRAM': 'Apple_Terminal', 'LANG': 'en_GB.UTF-8', 'TERM': 'xterm-256color', 'SHELL': '/bin/bash', 'SHLVL': '1', 'SECURITYSESSIONID': '186a6', 'PWD': '/Users/anthonybroome/google_drive/allspark/cli', 'XPC_FLAGS': '0x0', 'PYTHONHASHSEED': '1191905305', 'TMPDIR': '/var/folders/tl/f741nd0n1cj1838m00wj1z640000gn/T/', '_system_arch': 'x86_64', 'GEM_PATH': '/Users/anthonybroome/.rvm/gems/ruby-2.3.3:/Users/anthonybroome/.rvm/gems/ruby-2.3.3@global', 'rvm_bin_path': '/Users/anthonybroome/.rvm/bin', 'TERM_SESSION_ID': '64711754-8BA1-4219-8ACD-731B1B30E2DE', 'SSH_AUTH_SOCK': '/private/tmp/com.apple.launchd.NHz7vUxr9t/Listeners', 'rvm_prefix': '/Users/anthonybroome', 'XPC_SERVICE_NAME': '0', 'IRBRC': '/Users/anthonybroome/.rvm/rubies/ruby-2.3.3/.irbrc', '_system_type': 'Darwin', 'MY_RUBY_HOME': '/Users/anthonybroome/.rvm/rubies/ruby-2.3.3', 'Apple_PubSub_Socket_Render': '/private/tmp/com.apple.launchd.X1gJYV0UWK/Render', '_': '/usr/local/bin/tox', 'VIRTUAL_ENV': '/Users/anthonybroome/google_drive/allspark/cli/.tox/py27', 'OLDPWD': '/Users/anthonybroome', '__CF_USER_TEXT_ENCODING': '0x1F5:0x0:0x2', '_system_name': 'OSX', '_system_version': '10.12', 'GEM_HOME': '/Users/anthonybroome/.rvm/gems/ruby-2.3.3'}
+
+Processing ./.tox/dist/allspark-0.1.3.zip
+Building wheels for collected packages: allspark
+  Running setup.py bdist_wheel for allspark: started
+  Running setup.py bdist_wheel for allspark: finished with status 'done'
+  Stored in directory: /Users/anthonybroome/Library/Caches/pip/wheels/4e/2d/c1/168fa964afcebb6568ad14ef06aed2278b5b7b65e7bc9de20b
+Successfully built allspark
+Installing collected packages: allspark
+  Found existing installation: allspark 0.1.3
+    Uninstalling allspark-0.1.3:
+      Successfully uninstalled allspark-0.1.3
+Successfully installed allspark-0.1.3

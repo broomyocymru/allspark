@@ -1,0 +1,129 @@
+actionid: tox
+msg: packaging
+cmdargs: ['/usr/local/opt/python/bin/python2.7', local('/Users/anthonybroome/google_drive/allspark/cli/setup.py'), 'sdist', '--formats=zip', '--dist-dir', local('/Users/anthonybroome/google_drive/allspark/cli/.tox/dist')]
+env: None
+
+running sdist
+running egg_info
+writing requirements to allspark.egg-info/requires.txt
+writing allspark.egg-info/PKG-INFO
+writing top-level names to allspark.egg-info/top_level.txt
+writing dependency_links to allspark.egg-info/dependency_links.txt
+writing entry points to allspark.egg-info/entry_points.txt
+reading manifest file 'allspark.egg-info/SOURCES.txt'
+reading manifest template 'MANIFEST.in'
+writing manifest file 'allspark.egg-info/SOURCES.txt'
+warning: sdist: standard file not found: should have one of README, README.rst, README.txt
+
+running check
+creating allspark-0.1.3
+creating allspark-0.1.3/allspark
+creating allspark-0.1.3/allspark.egg-info
+creating allspark-0.1.3/allspark/commands
+creating allspark-0.1.3/allspark/core
+creating allspark-0.1.3/allspark/providers
+creating allspark-0.1.3/allspark/providers/aws
+creating allspark-0.1.3/allspark/providers/azurerm
+creating allspark-0.1.3/allspark/provisioners
+creating allspark-0.1.3/allspark/provisioners/ansible
+copying files to allspark-0.1.3...
+copying MANIFEST.in -> allspark-0.1.3
+copying setup.cfg -> allspark-0.1.3
+copying setup.py -> allspark-0.1.3
+copying allspark/__init__.py -> allspark-0.1.3/allspark
+copying allspark/allspark.py -> allspark-0.1.3/allspark
+copying allspark.egg-info/PKG-INFO -> allspark-0.1.3/allspark.egg-info
+copying allspark.egg-info/SOURCES.txt -> allspark-0.1.3/allspark.egg-info
+copying allspark.egg-info/dependency_links.txt -> allspark-0.1.3/allspark.egg-info
+copying allspark.egg-info/entry_points.txt -> allspark-0.1.3/allspark.egg-info
+copying allspark.egg-info/not-zip-safe -> allspark-0.1.3/allspark.egg-info
+copying allspark.egg-info/requires.txt -> allspark-0.1.3/allspark.egg-info
+copying allspark.egg-info/top_level.txt -> allspark-0.1.3/allspark.egg-info
+copying allspark/commands/__init__.py -> allspark-0.1.3/allspark/commands
+copying allspark/commands/cmd_config.py -> allspark-0.1.3/allspark/commands
+copying allspark/commands/cmd_init.py -> allspark-0.1.3/allspark/commands
+copying allspark/commands/cmd_nuke.py -> allspark-0.1.3/allspark/commands
+copying allspark/commands/cmd_proxy.py -> allspark-0.1.3/allspark/commands
+copying allspark/commands/cmd_sparks.py -> allspark-0.1.3/allspark/commands
+copying allspark/commands/cmd_update.py -> allspark-0.1.3/allspark/commands
+copying allspark/commands/cmd_version.py -> allspark-0.1.3/allspark/commands
+copying allspark/core/__init__.py -> allspark-0.1.3/allspark/core
+copying allspark/core/analytics.py -> allspark-0.1.3/allspark/core
+copying allspark/core/cache.py -> allspark-0.1.3/allspark/core
+copying allspark/core/clipboard.py -> allspark-0.1.3/allspark/core
+copying allspark/core/config.py -> allspark-0.1.3/allspark/core
+copying allspark/core/context.py -> allspark-0.1.3/allspark/core
+copying allspark/core/logger.py -> allspark-0.1.3/allspark/core
+copying allspark/core/randomness.py -> allspark-0.1.3/allspark/core
+copying allspark/core/stopwatch.py -> allspark-0.1.3/allspark/core
+copying allspark/core/util.py -> allspark-0.1.3/allspark/core
+copying allspark/providers/__init__.py -> allspark-0.1.3/allspark/providers
+copying allspark/providers/api.py -> allspark-0.1.3/allspark/providers
+copying allspark/providers/state.py -> allspark-0.1.3/allspark/providers
+copying allspark/providers/aws/main.tf.tpl -> allspark-0.1.3/allspark/providers/aws
+copying allspark/providers/aws/sparks.json -> allspark-0.1.3/allspark/providers/aws
+copying allspark/providers/aws/terraform.tfvars.tpl -> allspark-0.1.3/allspark/providers/aws
+copying allspark/providers/aws/variables.tf.tpl -> allspark-0.1.3/allspark/providers/aws
+copying allspark/providers/azurerm/__init__.py -> allspark-0.1.3/allspark/providers/azurerm
+copying allspark/providers/azurerm/main.tf.tpl -> allspark-0.1.3/allspark/providers/azurerm
+copying allspark/providers/azurerm/sparks.json -> allspark-0.1.3/allspark/providers/azurerm
+copying allspark/providers/azurerm/terraform.tfvars.tpl -> allspark-0.1.3/allspark/providers/azurerm
+copying allspark/providers/azurerm/variables.tf.tpl -> allspark-0.1.3/allspark/providers/azurerm
+copying allspark/provisioners/ansible/__init__.py -> allspark-0.1.3/allspark/provisioners/ansible
+copying allspark/provisioners/ansible/allsparks.yml.tpl -> allspark-0.1.3/allspark/provisioners/ansible
+copying allspark/provisioners/ansible/ansible.cfg.tpl -> allspark-0.1.3/allspark/provisioners/ansible
+copying allspark/provisioners/ansible/site.yml.tpl -> allspark-0.1.3/allspark/provisioners/ansible
+copying allspark/provisioners/ansible/sparks.tf.tpl -> allspark-0.1.3/allspark/provisioners/ansible
+copying allspark/provisioners/ansible/ssh_config.tpl -> allspark-0.1.3/allspark/provisioners/ansible
+Writing allspark-0.1.3/setup.cfg
+creating '.tox/dist/allspark-0.1.3.zip' and adding 'allspark-0.1.3' to it
+adding 'allspark-0.1.3/MANIFEST.in'
+adding 'allspark-0.1.3/PKG-INFO'
+adding 'allspark-0.1.3/setup.cfg'
+adding 'allspark-0.1.3/setup.py'
+adding 'allspark-0.1.3/allspark/__init__.py'
+adding 'allspark-0.1.3/allspark/allspark.py'
+adding 'allspark-0.1.3/allspark/commands/__init__.py'
+adding 'allspark-0.1.3/allspark/commands/cmd_config.py'
+adding 'allspark-0.1.3/allspark/commands/cmd_init.py'
+adding 'allspark-0.1.3/allspark/commands/cmd_nuke.py'
+adding 'allspark-0.1.3/allspark/commands/cmd_proxy.py'
+adding 'allspark-0.1.3/allspark/commands/cmd_sparks.py'
+adding 'allspark-0.1.3/allspark/commands/cmd_update.py'
+adding 'allspark-0.1.3/allspark/commands/cmd_version.py'
+adding 'allspark-0.1.3/allspark/core/__init__.py'
+adding 'allspark-0.1.3/allspark/core/analytics.py'
+adding 'allspark-0.1.3/allspark/core/cache.py'
+adding 'allspark-0.1.3/allspark/core/clipboard.py'
+adding 'allspark-0.1.3/allspark/core/config.py'
+adding 'allspark-0.1.3/allspark/core/context.py'
+adding 'allspark-0.1.3/allspark/core/logger.py'
+adding 'allspark-0.1.3/allspark/core/randomness.py'
+adding 'allspark-0.1.3/allspark/core/stopwatch.py'
+adding 'allspark-0.1.3/allspark/core/util.py'
+adding 'allspark-0.1.3/allspark/providers/__init__.py'
+adding 'allspark-0.1.3/allspark/providers/api.py'
+adding 'allspark-0.1.3/allspark/providers/state.py'
+adding 'allspark-0.1.3/allspark/providers/aws/main.tf.tpl'
+adding 'allspark-0.1.3/allspark/providers/aws/sparks.json'
+adding 'allspark-0.1.3/allspark/providers/aws/terraform.tfvars.tpl'
+adding 'allspark-0.1.3/allspark/providers/aws/variables.tf.tpl'
+adding 'allspark-0.1.3/allspark/providers/azurerm/__init__.py'
+adding 'allspark-0.1.3/allspark/providers/azurerm/main.tf.tpl'
+adding 'allspark-0.1.3/allspark/providers/azurerm/sparks.json'
+adding 'allspark-0.1.3/allspark/providers/azurerm/terraform.tfvars.tpl'
+adding 'allspark-0.1.3/allspark/providers/azurerm/variables.tf.tpl'
+adding 'allspark-0.1.3/allspark/provisioners/ansible/__init__.py'
+adding 'allspark-0.1.3/allspark/provisioners/ansible/allsparks.yml.tpl'
+adding 'allspark-0.1.3/allspark/provisioners/ansible/ansible.cfg.tpl'
+adding 'allspark-0.1.3/allspark/provisioners/ansible/site.yml.tpl'
+adding 'allspark-0.1.3/allspark/provisioners/ansible/sparks.tf.tpl'
+adding 'allspark-0.1.3/allspark/provisioners/ansible/ssh_config.tpl'
+adding 'allspark-0.1.3/allspark.egg-info/dependency_links.txt'
+adding 'allspark-0.1.3/allspark.egg-info/entry_points.txt'
+adding 'allspark-0.1.3/allspark.egg-info/not-zip-safe'
+adding 'allspark-0.1.3/allspark.egg-info/PKG-INFO'
+adding 'allspark-0.1.3/allspark.egg-info/requires.txt'
+adding 'allspark-0.1.3/allspark.egg-info/SOURCES.txt'
+adding 'allspark-0.1.3/allspark.egg-info/top_level.txt'
+removing 'allspark-0.1.3' (and everything under it)
