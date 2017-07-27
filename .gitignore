@@ -8,6 +8,8 @@ projects/
 software/
 infrastructure/
 _book/
+.tox/
+.python_version
 
 # Distribution / packaging
 .Python
