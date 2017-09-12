@@ -5,6 +5,6 @@
   hosts: {{ spark }}
   become: true
   roles:
-    - { role: {{data.software.name}} }
+    - { role: {{data.software.name}}{{data|software_role_params}}}
 {% endif %}
 {%- endfor -%}

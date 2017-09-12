@@ -145,23 +145,26 @@ class AllsparkGenerator:
         self.generate()
 
         result_code = 0
-        tf_force = " -update" if force else ""
+        tf_init_force = " -upgrade" if force else ""
+        tf_get_force = " -update" if force else ""
         an_force = " --force" if force else ""
 
         # Infrastructure
         if apply_infra and util.confirm(batch, 'Plan Infrastructure Changes [Y/N] :'):
-            result_code = util.shell_run("terraform get" + tf_force, cwd=self.project_infra_dir)["result_code"]
+            result_code = util.shell_run("terraform init -input=false" + tf_init_force, cwd=self.project_infra_dir)["result_code"]
             if result_code == 0:
-                result_code = util.shell_run("terraform plan", cwd=self.project_infra_dir)["result_code"]
+                result_code = util.shell_run("terraform get" + tf_get_force, cwd=self.project_infra_dir)["result_code"]
+                if result_code == 0:
+                    result_code = util.shell_run("terraform plan", cwd=self.project_infra_dir)["result_code"]
 
-                if result_code == 0 and util.confirm(batch, 'Apply Infrastructure Changes [Y/N] :'):
-                    logger.log("")
-                    logger.log("Build Infrastructure")
-                    logger.log("")
-                    result_code = util.shell_run("terraform apply", cwd=self.project_infra_dir)["result_code"] # apply infra changes
-                    if result_code == 0:
-                        result_code = util.shell_run("terraform output -json > " + self.tf_outputs, cwd=self.project_infra_dir)["result_code"] # get output variables
-                        self.generate_ssh_config()
+                    if result_code == 0 and util.confirm(batch, 'Apply Infrastructure Changes [Y/N] :'):
+                        logger.log("")
+                        logger.log("Build Infrastructure")
+                        logger.log("")
+                        result_code = util.shell_run("terraform apply", cwd=self.project_infra_dir)["result_code"] # apply infra changes
+                        if result_code == 0:
+                            result_code = util.shell_run("terraform output -json > " + self.tf_outputs, cwd=self.project_infra_dir)["result_code"] # get output variables
+                            self.generate_ssh_config()
 
         # Software
         if result_code == 0 and apply_software and util.confirm(batch, 'Apply Software Changes [Y/N] :'):

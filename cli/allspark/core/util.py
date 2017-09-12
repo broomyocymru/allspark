@@ -154,12 +154,22 @@ def write_template(template, data, output_file):
         autoescape=select_autoescape(['html', 'xml'])
     )
     env.filters["replace"] = template_replace
+    env.filters["software_role_params"] = template_ansible_role_params
     template = env.get_template(template)
     content = template.render(data=data)
     content = template_replace(content)
 
     f.write(content)
     f.close()
+
+def template_ansible_role_params(data):
+    param_str = ""
+
+    if("params" in data["software"]):
+        for k,v in data["software"]["params"].iteritems():
+            param_str += ", " + k + ": " + "'" + v + "'"
+
+    return param_str
 
 def template_replace(text, name=None, data={}):
     if("<random_username>" in text):
